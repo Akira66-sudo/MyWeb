@@ -37,7 +37,10 @@ async function fetchWithFallback(type, localFallback) {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 3000);
 
-        const response = await fetch(url, { signal: controller.signal });
+        const response = await fetch(url, { 
+            signal: controller.signal,
+            cache: 'no-store' // Force fresh fetch, bypass Vercel cache
+        });
         clearTimeout(timeoutId);
 
         if (!response.ok) {

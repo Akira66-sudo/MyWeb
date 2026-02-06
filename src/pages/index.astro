@@ -13,67 +13,67 @@ import Projects from "../components/Projects.astro";
 ---
 
 <MainLayout title="Zidan | Web & Game Developer">
-    <Loader />
+  <Loader />
 
-    <!-- Grid Layout Utama -->
-    <div class="lg:grid lg:grid-cols-12 lg:gap-8">
-        <!-- KIRI: Identitas (Sticky) -->
-        <div
-            class="lg:col-span-5 lg:sticky lg:top-8 lg:self-start flex flex-col gap-6 mb-12 lg:mb-0 z-10"
+  <!-- Grid Layout Utama -->
+  <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+    <!-- KIRI: Identitas (Sticky) -->
+    <div
+      class="lg:col-span-5 lg:sticky lg:top-8 lg:self-start flex flex-col gap-6 mb-12 lg:mb-0 z-10 opacity-0 animate-fade-in-up"
+    >
+      <div>
+        <Navbar />
+      </div>
+
+      <Hero />
+
+      <!-- Tautan Sosial -->
+      <div class="hidden lg:flex gap-2.5">
+        <a
+          href="mailto:zeyshyy@gmail.com"
+          class="flex items-center gap-2 px-3 py-2 bg-white dark:bg-[#252d3a] border border-slate-200/70 dark:border-[#3d4555] rounded-lg text-slate-500 dark:text-slate-400 hover:text-teal-600 dark:hover:text-white hover:border-teal-400/50 hover:bg-slate-50/50 dark:hover:bg-[#3d4555] transition-all text-[11px] font-bold uppercase tracking-wider group shadow-sm"
         >
-            <div>
-                <Navbar />
-            </div>
+          <i
+            class="ri-mail-line text-[16px] group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors"
+          ></i>
+          Email
+        </a>
+        <a
+          href="https://github.com/zidan-idz"
+          target="_blank"
+          class="flex items-center gap-2 px-3 py-2 bg-white dark:bg-[#252d3a] border border-slate-200/70 dark:border-[#3d4555] rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300/80 dark:hover:border-[#4a5568] hover:bg-slate-50/50 dark:hover:bg-[#3d4555] transition-all text-[11px] font-bold uppercase tracking-wider group shadow-sm"
+        >
+          <i
+            class="ri-github-line text-[16px] group-hover:text-slate-900 dark:group-hover:text-white transition-colors"
+          ></i>
+          GitHub
+        </a>
+        <a
+          href="https://linkedin.com/in/zidan-idz"
+          target="_blank"
+          class="flex items-center gap-2 px-3 py-2 bg-white dark:bg-[#252d3a] border border-slate-200/70 dark:border-[#3d4555] rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300/80 dark:hover:border-[#4a5568] hover:bg-slate-50/50 dark:hover:bg-[#3d4555] transition-all text-[11px] font-bold uppercase tracking-wider group shadow-sm"
+        >
+          <i
+            class="ri-linkedin-line text-[16px] group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors"
+          ></i>
+          LinkedIn
+        </a>
+      </div>
 
-            <Hero />
-
-            <!-- Tautan Sosial -->
-            <div class="hidden lg:flex gap-2.5">
-                <a
-                    href="mailto:zeyshyy@gmail.com"
-                    class="flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:border-indigo-500/50 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all text-[11px] font-bold uppercase tracking-wider group"
-                >
-                    <i
-                        class="ri-mail-line text-[16px] group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors"
-                    ></i>
-                    Email
-                </a>
-                <a
-                    href="https://github.com/zidan-idz"
-                    target="_blank"
-                    class="flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-400 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all text-[11px] font-bold uppercase tracking-wider group"
-                >
-                    <i
-                        class="ri-github-line text-[16px] group-hover:text-slate-900 dark:group-hover:text-white transition-colors"
-                    ></i>
-                    GitHub
-                </a>
-                <a
-                    href="https://linkedin.com/in/zidan-idz"
-                    target="_blank"
-                    class="flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-400 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all text-[11px] font-bold uppercase tracking-wider group"
-                >
-                    <i
-                        class="ri-linkedin-line text-[16px] group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors"
-                    ></i>
-                    LinkedIn
-                </a>
-            </div>
-
-            <!-- Catatan Sistem (Selalu Tampil) -->
-            <div
-                class="mt-4 border-t border-slate-200 dark:border-slate-800 pt-6"
-            >
-                <SystemNotes />
-                <LiveStats />
-            </div>
-        </div>
-
-        <!-- KANAN: Konten Scrollable -->
-        <main class="lg:col-span-7 lg:py-4 space-y-10">
-            <Principles />
-            <TechStack />
-            <Projects />
-        </main>
+      <!-- Catatan Sistem (Selalu Tampil) -->
+      <div class="mt-4 border-t border-slate-100 dark:border-[#3d4555] pt-6">
+        <SystemNotes />
+        <LiveStats />
+      </div>
     </div>
+
+    <!-- KANAN: Konten Scrollable -->
+    <main
+      class="lg:col-span-7 lg:py-4 space-y-10 opacity-0 animate-fade-in-up delay-200"
+    >
+      <Principles />
+      <TechStack />
+      <Projects />
+    </main>
+  </div>
 </MainLayout>

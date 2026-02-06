@@ -6,23 +6,21 @@ const systemNotes = siteData.systemNotes;
 ---
 
 <h3
-    class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3"
+  class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-3"
 >
-    System Notes
+  System Notes
 </h3>
 <div
-    class="font-mono text-[10px] text-slate-500 dark:text-slate-400/80 space-y-2"
+  class="font-mono text-[10px] text-slate-500 dark:text-slate-400/80 space-y-2"
 >
-    {
-        systemNotes.map((note) => (
-            <div class="flex justify-between border-b border-dashed border-slate-200 dark:border-slate-800/50 pb-1">
-                <span class="text-slate-600 dark:text-slate-500 font-bold opacity-90">
-                    {note.label}
-                </span>
-                <span class="text-indigo-600 dark:text-indigo-300/90">
-                    {note.value}
-                </span>
-            </div>
-        ))
-    }
+  {
+    systemNotes.map((note) => (
+      <div class="flex justify-between border-b border-dashed border-slate-200 dark:border-slate-800/50 pb-1">
+        <span class="text-slate-600 dark:text-slate-500 font-bold opacity-90">
+          {note.label}
+        </span>
+        <span class="text-teal-600 dark:text-teal-300/90">{note.value}</span>
+      </div>
+    ))
+  }
 </div>

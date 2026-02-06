@@ -5,53 +5,51 @@ const siteData = await getSiteData();
 
 <!-- Filosofi & Prinsip -->
 <section id="about" class="relative">
-    <div class="flex items-center gap-3 mb-6">
-        <span class="w-6 h-[2px] bg-indigo-500"></span>
-        <h2
-            class="text-xs font-mono text-slate-500 uppercase tracking-widest font-bold"
-        >
-            Principles
-        </h2>
-    </div>
+  <div class="flex items-center gap-3 mb-6">
+    <span class="w-6 h-[2px] bg-teal-500"></span>
+    <h2
+      class="text-xs font-mono text-slate-500 uppercase tracking-widest font-bold"
+    >
+      Principles
+    </h2>
+  </div>
+
+  <div
+    class="bg-white dark:bg-[#252d3a] p-6 rounded-2xl border border-slate-200/70 dark:border-[#3d4555] hover:border-slate-300/80 dark:hover:border-[#4a5568] transition-colors shadow-sm"
+  >
+    <h3
+      class="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2 mb-3"
+    >
+      <i class="ri-terminal-box-line text-teal-500"></i>
+      Readability Counts
+    </h3>
+    <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+      {siteData.principles.description}
+    </p>
 
     <div
-        class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
+      class="mt-6 pt-6 border-t border-slate-100 dark:border-[#3d4555] flex gap-8"
     >
-        <h3
-            class="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2 mb-3"
+      <div>
+        <h4
+          class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1"
         >
-            <i class="ri-terminal-box-line text-indigo-500"></i>
-            Readability Counts
-        </h3>
-        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
-            {siteData.principles.description}
+          {siteData.principles.approach.label}
+        </h4>
+        <p class="text-slate-700 dark:text-slate-200 font-mono text-xs italic">
+          "{siteData.principles.approach.value}"
         </p>
-
-        <div
-            class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 flex gap-8"
+      </div>
+      <div>
+        <h4
+          class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1"
         >
-            <div>
-                <h4
-                    class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1"
-                >
-                    {siteData.principles.approach.label}
-                </h4>
-                <p
-                    class="text-slate-700 dark:text-slate-200 font-mono text-xs italic"
-                >
-                    "{siteData.principles.approach.value}"
-                </p>
-            </div>
-            <div>
-                <h4
-                    class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1"
-                >
-                    {siteData.principles.focus.label}
-                </h4>
-                <p class="text-slate-700 dark:text-slate-200 font-mono text-xs">
-                    {siteData.principles.focus.value}
-                </p>
-            </div>
-        </div>
+          {siteData.principles.focus.label}
+        </h4>
+        <p class="text-slate-700 dark:text-slate-200 font-mono text-xs">
+          {siteData.principles.focus.value}
+        </p>
+      </div>
     </div>
+  </div>
 </section>

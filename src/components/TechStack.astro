@@ -5,151 +5,139 @@ const siteData = await getSiteData();
 
 <!-- Keahlian (Grid Bento) -->
 <section id="skills">
-    <div class="flex items-center gap-3 mb-6">
-        <span class="w-6 h-[2px] bg-indigo-500"></span>
-        <h2
-            class="text-xs font-mono text-slate-500 uppercase tracking-widest font-bold"
+  <div class="flex items-center gap-3 mb-6">
+    <span class="w-6 h-[2px] bg-teal-500"></span>
+    <h2
+      class="text-xs font-mono text-slate-500 uppercase tracking-widest font-bold"
+    >
+      Tech Stack
+    </h2>
+  </div>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+    <!-- Bahasa Pemrograman (Inti) -->
+    <div
+      class="col-span-2 row-span-2 bg-gradient-to-br from-teal-50/70 to-white dark:from-teal-900/20 dark:to-[#252d3a] p-5 rounded-2xl border border-teal-200/40 dark:border-teal-500/30 relative overflow-hidden group hover:border-teal-300/60 dark:hover:border-teal-500/50 transition-all shadow-sm"
+    >
+      <div class="absolute -right-4 -bottom-4 opacity-10">
+        <i class="ri-braces-line text-[120px]"></i>
+      </div>
+      <div class="flex items-center justify-between mb-3 relative z-10">
+        <h3
+          class="font-bold text-teal-500 dark:text-teal-300 text-xs uppercase tracking-wider opacity-90"
         >
-            Tech Stack
-        </h2>
+          Languages
+        </h3>
+        <i class="ri-code-line text-xl text-teal-500/50 dark:text-teal-300/50"
+        ></i>
+      </div>
+      <div class="grid grid-cols-2 gap-2 relative z-10">
+        {
+          siteData.languages.map((lang) => (
+            <div class="p-2.5 bg-white/80 dark:bg-[#151a26] rounded-lg border border-slate-200/50 dark:border-[#3d4555]">
+              <span class="block text-slate-900 dark:text-slate-100 font-bold text-sm">
+                {lang.name}
+              </span>
+              <span
+                class={`block text-[10px] ${lang.isPrimary ? "text-emerald-600 dark:text-emerald-400" : "text-slate-500 dark:text-slate-500"} font-mono`}
+              >
+                {lang.status}
+              </span>
+            </div>
+          ))
+        }
+      </div>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <!-- Bahasa Pemrograman (Inti) -->
-        <div
-            class="col-span-2 row-span-2 bg-gradient-to-br from-indigo-50 to-white dark:from-indigo-900/20 dark:to-slate-900 p-5 rounded-2xl border border-indigo-200/50 dark:border-indigo-500/30 relative overflow-hidden group hover:border-indigo-300 dark:hover:border-indigo-500/50 transition-all"
-        >
-            <div class="absolute -right-4 -bottom-4 opacity-10">
-                <i class="ri-braces-line text-[120px]"></i>
-            </div>
-            <div class="flex items-center justify-between mb-3 relative z-10">
-                <h3
-                    class="font-bold text-indigo-500 dark:text-indigo-300 text-xs uppercase tracking-wider opacity-90"
-                >
-                    Languages
-                </h3>
-                <i
-                    class="ri-code-line text-xl text-indigo-500/50 dark:text-indigo-300/50"
-                ></i>
-            </div>
-            <div class="grid grid-cols-2 gap-2 relative z-10">
-                {
-                    siteData.languages.map((lang) => (
-                        <div class="p-2.5 bg-slate-100 dark:bg-slate-950/50 rounded-lg border border-slate-200 dark:border-slate-800/50">
-                            <span class="block text-slate-900 dark:text-slate-100 font-bold text-sm">
-                                {lang.name}
-                            </span>
-                            <span
-                                class={`block text-[10px] ${lang.isPrimary ? "text-emerald-600 dark:text-emerald-400" : "text-slate-500 dark:text-slate-500"} font-mono`}
-                            >
-                                {lang.status}
-                            </span>
-                        </div>
-                    ))
-                }
-            </div>
-        </div>
-
-        <!-- Teknologi Web -->
-        <div
-            class="col-span-1 row-span-2 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col group hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
-        >
-            <div class="flex items-center justify-between mb-4">
-                <h3
-                    class="font-bold text-xs text-indigo-600 dark:text-indigo-400"
-                >
-                    Web Stack
-                </h3>
-                <i
-                    class="ri-global-line text-2xl text-slate-200 dark:text-slate-700 group-hover:text-indigo-500/50 dark:group-hover:text-indigo-400/50 transition-colors"
-                ></i>
-            </div>
-            <ul
-                class="text-[10px] space-y-2 font-mono text-slate-600 dark:text-slate-400 font-bold"
-            >
-                {siteData.webStack.map((item) => <li>{item}</li>)}
-            </ul>
-        </div>
-
-        <!-- Data & Cloud -->
-        <div
-            class="col-span-1 row-span-2 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col group hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
-        >
-            <div class="flex items-center justify-between mb-4">
-                <h3
-                    class="font-bold text-xs text-indigo-600 dark:text-indigo-400"
-                >
-                    Data
-                </h3>
-                <i
-                    class="ri-database-2-line text-2xl text-slate-200 dark:text-slate-700 group-hover:text-indigo-500/50 dark:group-hover:text-indigo-400/50 transition-colors"
-                ></i>
-            </div>
-            <ul
-                class="text-[10px] space-y-2 font-mono text-slate-600 dark:text-slate-400 font-bold"
-            >
-                {siteData.dataStack.map((item) => <li>{item}</li>)}
-            </ul>
-        </div>
-
-        <!-- Desain -->
-        <div
-            class="col-span-2 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center justify-between hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
-        >
-            <div>
-                <h3
-                    class="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase tracking-wider mb-1"
-                >
-                    Design Philosophy
-                </h3>
-                <p class="text-slate-900 dark:text-slate-100 font-bold text-xs">
-                    <span class="text-indigo-400">Zen Design</span> & Material
-                </p>
-            </div>
-            <div
-                class="w-6 h-6 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center"
-            >
-                <i class="ri-palette-line text-indigo-400 text-xs"></i>
-            </div>
-        </div>
-
-        <!-- Alat & Pengembangan Game -->
-        <div
-            class="col-span-2 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center justify-between hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
-        >
-            <div class="flex gap-4">
-                <div>
-                    <h3
-                        class="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase tracking-wider mb-1"
-                    >
-                        Tools
-                    </h3>
-                    <p
-                        class="text-slate-900 dark:text-slate-100 font-bold text-xs"
-                    >
-                        {siteData.tools.join(" • ")}
-                    </p>
-                </div>
-                <div class="w-[1px] h-full bg-slate-200 dark:bg-slate-800">
-                </div>
-                <div>
-                    <h3
-                        class="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase tracking-wider mb-1"
-                    >
-                        Game Dev
-                    </h3>
-                    <p
-                        class="text-slate-900 dark:text-slate-100 font-bold text-xs"
-                    >
-                        {siteData.gameDev.join(" • ")}
-                    </p>
-                </div>
-            </div>
-            <div
-                class="w-6 h-6 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center"
-            >
-                <i class="ri-terminal-box-line text-indigo-400 text-xs"></i>
-            </div>
-        </div>
+    <!-- Teknologi Web -->
+    <div
+      class="col-span-1 row-span-2 bg-white dark:bg-[#252d3a] p-4 rounded-2xl border border-slate-200/70 dark:border-[#3d4555] flex flex-col group hover:border-slate-300/80 dark:hover:border-[#4a5568] transition-colors shadow-sm"
+    >
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-bold text-xs text-teal-600 dark:text-teal-400">
+          Web Stack
+        </h3>
+        <i
+          class="ri-global-line text-2xl text-slate-200 dark:text-slate-700 group-hover:text-teal-500/50 dark:group-hover:text-teal-400/50 transition-colors"
+        ></i>
+      </div>
+      <ul
+        class="text-[10px] space-y-2 font-mono text-slate-600 dark:text-slate-400 font-bold"
+      >
+        {siteData.webStack.map((item) => <li>{item}</li>)}
+      </ul>
     </div>
+
+    <!-- Data & Cloud -->
+    <div
+      class="col-span-1 row-span-2 bg-white dark:bg-[#252d3a] p-4 rounded-2xl border border-slate-200/70 dark:border-[#3d4555] flex flex-col group hover:border-slate-300/80 dark:hover:border-[#4a5568] transition-colors shadow-sm"
+    >
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-bold text-xs text-teal-600 dark:text-teal-400">Data</h3>
+        <i
+          class="ri-database-2-line text-2xl text-slate-200 dark:text-slate-700 group-hover:text-teal-500/50 dark:group-hover:text-teal-400/50 transition-colors"
+        ></i>
+      </div>
+      <ul
+        class="text-[10px] space-y-2 font-mono text-slate-600 dark:text-slate-400 font-bold"
+      >
+        {siteData.dataStack.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+
+    <!-- Desain -->
+    <div
+      class="col-span-2 bg-white dark:bg-[#252d3a] p-4 rounded-2xl border border-slate-200/70 dark:border-[#3d4555] flex items-center justify-between hover:border-slate-300/80 dark:hover:border-[#4a5568] transition-colors shadow-sm"
+    >
+      <div>
+        <h3
+          class="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase tracking-wider mb-1"
+        >
+          Design Philosophy
+        </h3>
+        <p class="text-slate-900 dark:text-slate-100 font-bold text-xs">
+          <span class="text-teal-400">Zen Design</span> & Material
+        </p>
+      </div>
+      <div
+        class="w-6 h-6 rounded-full bg-slate-50 dark:bg-[#3d4555] flex items-center justify-center"
+      >
+        <i class="ri-palette-line text-teal-400 text-xs"></i>
+      </div>
+    </div>
+
+    <!-- Alat & Pengembangan Game -->
+    <div
+      class="col-span-2 bg-white dark:bg-[#252d3a] p-4 rounded-2xl border border-slate-200/70 dark:border-[#3d4555] flex items-center justify-between hover:border-slate-300/80 dark:hover:border-[#4a5568] transition-colors shadow-sm"
+    >
+      <div class="flex gap-4">
+        <div>
+          <h3
+            class="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase tracking-wider mb-1"
+          >
+            Tools
+          </h3>
+          <p class="text-slate-900 dark:text-slate-100 font-bold text-xs">
+            {siteData.tools.join(" • ")}
+          </p>
+        </div>
+        <div class="w-[1px] h-full bg-slate-200 dark:bg-[#3d4555]"></div>
+        <div>
+          <h3
+            class="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase tracking-wider mb-1"
+          >
+            Game Dev
+          </h3>
+          <p class="text-slate-900 dark:text-slate-100 font-bold text-xs">
+            {siteData.gameDev.join(" • ")}
+          </p>
+        </div>
+      </div>
+      <div
+        class="w-6 h-6 rounded-full bg-slate-50 dark:bg-[#3d4555] flex items-center justify-center"
+      >
+        <i class="ri-terminal-box-line text-teal-400 text-xs"></i>
+      </div>
+    </div>
+  </div>
 </section>

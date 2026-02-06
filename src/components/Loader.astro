@@ -4,60 +4,60 @@ import { DEV_CONFIG } from "../config/dev.config";
 
 <!-- Loader -->
 <div
-    id="loader"
-    data-dev-always-show={DEV_CONFIG.LOADER_ALWAYS_SHOW.toString()}
-    class="fixed inset-0 z-[100] bg-slate-50 dark:bg-slate-950 flex items-center justify-center transition-opacity duration-700 ease-out"
+  id="loader"
+  data-dev-always-show={DEV_CONFIG.LOADER_ALWAYS_SHOW.toString()}
+  class="fixed inset-0 z-[100] bg-[#fafaf9] dark:bg-[#1a1f2e] flex items-center justify-center transition-opacity duration-700 ease-out"
 >
-    <span
-        class="font-mono font-black text-4xl md:text-6xl text-slate-900 dark:text-slate-100 tracking-tighter"
+  <span
+    class="font-mono font-black text-4xl md:text-6xl text-slate-900 dark:text-slate-100 tracking-tighter"
+  >
+    Zidan<span class="text-teal-500 animate-cursor-cycle"></span>IDz
+  </span>
+  <div class="absolute bottom-8 left-0 right-0 text-center">
+    <p
+      class="text-[10px] font-mono text-slate-400 dark:text-slate-600 uppercase tracking-widest"
     >
-        Zidan<span class="text-indigo-500 animate-cursor-cycle"></span>IDz
-    </span>
-    <div class="absolute bottom-8 left-0 right-0 text-center">
-        <p
-            class="text-[10px] font-mono text-slate-400 dark:text-slate-600 uppercase tracking-widest"
-        >
-            &copy; {
-                new Date().getFullYear() > 2024
-                    ? `2024-${new Date().getFullYear()}`
-                    : "2024"
-            } Muhammad Raid Zaidani
-        </p>
-    </div>
+      &copy; {
+        new Date().getFullYear() > 2024
+          ? `2024-${new Date().getFullYear()}`
+          : "2024"
+      } Muhammad Raid Zaidani
+    </p>
+  </div>
 </div>
 
 <script is:inline>
-    // Konfigurasi dari dev.config.js (diinjeksi via data attribute)
-    const loader = document.getElementById("loader");
-    const LOADER_COOLDOWN = 10 * 60 * 1000; // 10 Menit
+  const loader = document.getElementById("loader");
+  const LOADER_COOLDOWN = 10 * 60 * 1000; // 10 Menit
+  const MIN_DISPLAY_TIME = 2000; // Minimum 2 detik
 
-    // Ambil config dari data attribute (fallback true untuk dev)
-    const DEV_ALWAYS_SHOW = loader?.dataset.devAlwaysShow === "true";
+  // Config dari data attribute
+  const DEV_ALWAYS_SHOW = loader?.dataset.devAlwaysShow === "true";
 
-    const lastShown = localStorage.getItem("last_loader_time");
-    const now = Date.now();
+  const lastShown = localStorage.getItem("last_loader_time");
+  const now = Date.now();
 
-    // Logika tampil?
-    const shouldShow =
-        DEV_ALWAYS_SHOW ||
-        !lastShown ||
-        now - parseInt(lastShown) > LOADER_COOLDOWN;
+  // Cek apakah perlu update timestamp (cooldown logic)
+  const isFirstVisit =
+    !lastShown || now - parseInt(lastShown) > LOADER_COOLDOWN;
 
-    window.addEventListener("load", () => {
-        if (loader) {
-            if (shouldShow) {
-                // Update timestamp
-                localStorage.setItem("last_loader_time", now.toString());
+  if (isFirstVisit || DEV_ALWAYS_SHOW) {
+    localStorage.setItem("last_loader_time", now.toString());
+  }
 
-                // Fade out normal
-                setTimeout(() => {
-                    loader.style.opacity = "0";
-                    loader.style.pointerEvents = "none";
-                }, 1500); // 1.5 detik total
-            } else {
-                // Sembunyi instan (SKIP)
-                loader.style.display = "none";
-            }
-        }
-    });
+  // Track waktu mulai untuk memastikan minimum display time
+  const startTime = performance.now();
+
+  window.addEventListener("load", () => {
+    if (loader) {
+      const elapsed = performance.now() - startTime;
+      const remainingTime = Math.max(0, MIN_DISPLAY_TIME - elapsed);
+
+      // Selalu tunggu minimum 2 detik dari awal, lalu fade out
+      setTimeout(() => {
+        loader.style.opacity = "0";
+        loader.style.pointerEvents = "none";
+      }, remainingTime);
+    }
+  });
 </script>

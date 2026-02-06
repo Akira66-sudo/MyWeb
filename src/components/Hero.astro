@@ -5,109 +5,103 @@ const siteData = await getSiteData();
 
 <!-- Profil & Intro -->
 <div class="space-y-5">
-    <!-- Foto Profil -->
-    <div class="relative w-24 h-24 lg:w-28 lg:h-28">
-        <div
-            class="absolute inset-0 bg-indigo-500/20 rounded-full blur-xl animate-pulse"
-        >
-        </div>
-        <img
-            src="/me.webp"
-            alt="Zidan"
-            class="relative w-full h-full object-cover rounded-full border-2 border-slate-800 shadow-2xl"
-        />
-
-        <!-- Badge Status Floating -->
-        <div
-            class="absolute -bottom-1 -right-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-1.5 py-0.5 lg:px-2 lg:py-0.5 rounded-full flex items-center gap-1.5 shadow-lg scale-90 lg:scale-100 origin-bottom-right"
-        >
-            <span
-                class="w-1 lg:w-1.5 h-1 lg:h-1.5 rounded-full bg-emerald-500 animate-pulse"
-            ></span>
-            <span
-                class="text-[8px] lg:text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider"
-                >Busy</span
-            >
-        </div>
+  <!-- Foto Profil -->
+  <div class="relative w-24 h-24 lg:w-28 lg:h-28">
+    <div
+      class="absolute inset-0 bg-teal-500/20 rounded-full blur-xl animate-pulse"
+    >
     </div>
+    <img
+      src="/me.webp"
+      alt="Zidan"
+      class="relative w-full h-full object-cover rounded-full border-2 border-slate-800 shadow-2xl"
+    />
 
-    <div>
-        <!-- Judul Utama (Typewriter) -->
-        <h1
-            class="text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-slate-100 leading-tight mb-2 tracking-tight min-h-[6rem] lg:min-h-[6.25rem] pt-0"
-        >
-            <span id="typewriter-text"></span><span
-                class="text-indigo-500 animate-cursor-blink">_</span
-            >
-        </h1>
-        <p
-            class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium max-w-sm"
-        >
-            {siteData.identity.introStart}
-            <span class="text-indigo-600 dark:text-indigo-400 font-semibold"
-                >{siteData.identity.introHighlight}</span
-            >
-        </p>
-
-        <script is:inline>
-            const textElement = document.getElementById("typewriter-text");
-            const phrases = [
-                "Web & Game\nDeveloper.",
-                "From Lombok,\nIndonesia.",
-                "Loves Minimal,\nBeautiful & Personal.",
-            ];
-            let phraseIndex = 0;
-            let charIndex = 0;
-            let isDeleting = false;
-
-            function type() {
-                const currentPhrase = phrases[phraseIndex];
-
-                if (isDeleting) {
-                    // Hapus teks (Cepat)
-                    // Cek baris baru HTML
-                    if (textElement.innerHTML.endsWith("<br>")) {
-                        textElement.innerHTML = textElement.innerHTML.slice(
-                            0,
-                            -4,
-                        );
-                        charIndex--; // Logika potong sederhana
-                    } else {
-                        textElement.innerText = currentPhrase.substring(
-                            0,
-                            charIndex - 1,
-                        );
-                    }
-                    charIndex--;
-                } else {
-                    // Logika pengetikan
-                    const char = currentPhrase.charAt(charIndex);
-                    if (char === "\n") {
-                        textElement.innerHTML += "<br>";
-                    } else {
-                        textElement.innerText += char;
-                    }
-                    charIndex++;
-                }
-
-                let typeSpeed = isDeleting ? 30 : 80;
-
-                if (!isDeleting && charIndex === currentPhrase.length) {
-                    // Selesai mengetik
-                    typeSpeed = 2000; // Jeda akhir
-                    isDeleting = true;
-                } else if (isDeleting && charIndex === 0) {
-                    // Selesai menghapus
-                    isDeleting = false;
-                    phraseIndex = (phraseIndex + 1) % phrases.length;
-                    typeSpeed = 500;
-                }
-
-                setTimeout(type, typeSpeed);
-            }
-
-            // Mulai delay
-            setTimeout(type, 1500);
-        </script>
+    <!-- Badge Status Floating -->
+    <div
+      class="absolute -bottom-1 -right-1 bg-white dark:bg-[#252d3a] border border-slate-300/50 dark:border-[#3d4555] px-1.5 py-0.5 lg:px-2 lg:py-0.5 rounded-full flex items-center gap-1.5 shadow-lg scale-90 lg:scale-100 origin-bottom-right"
+    >
+      <span
+        class="w-1 lg:w-1.5 h-1 lg:h-1.5 rounded-full bg-emerald-500 animate-pulse"
+      ></span>
+      <span
+        class="text-[8px] lg:text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider"
+        >Busy</span
+      >
     </div>
+  </div>
+
+  <div>
+    <!-- Judul Utama (Typewriter) -->
+    <h1
+      class="text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-slate-100 leading-tight mb-2 tracking-tight min-h-[6rem] lg:min-h-[6.25rem] pt-0"
+    >
+      <span id="typewriter-text"></span><span
+        class="text-teal-500 animate-cursor-blink">_</span
+      >
+    </h1>
+    <p
+      class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium max-w-sm"
+    >
+      {siteData.identity.introStart}
+      <span class="text-teal-600 dark:text-teal-400 font-semibold"
+        >{siteData.identity.introHighlight}</span
+      >
+    </p>
+
+    <script is:inline>
+      const textElement = document.getElementById("typewriter-text");
+      const phrases = [
+        "Web & Game\nDeveloper.",
+        "From Lombok,\nIndonesia.",
+        "Loves Minimal,\nBeautiful & Personal.",
+      ];
+      let phraseIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+
+      function type() {
+        const currentPhrase = phrases[phraseIndex];
+
+        if (isDeleting) {
+          // Hapus teks (Cepat)
+          // Cek baris baru HTML
+          if (textElement.innerHTML.endsWith("<br>")) {
+            textElement.innerHTML = textElement.innerHTML.slice(0, -4);
+            charIndex--; // Logika potong sederhana
+          } else {
+            textElement.innerText = currentPhrase.substring(0, charIndex - 1);
+          }
+          charIndex--;
+        } else {
+          // Logika pengetikan
+          const char = currentPhrase.charAt(charIndex);
+          if (char === "\n") {
+            textElement.innerHTML += "<br>";
+          } else {
+            textElement.innerText += char;
+          }
+          charIndex++;
+        }
+
+        let typeSpeed = isDeleting ? 30 : 80;
+
+        if (!isDeleting && charIndex === currentPhrase.length) {
+          // Selesai mengetik
+          typeSpeed = 2000; // Jeda akhir
+          isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+          // Selesai menghapus
+          isDeleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+          typeSpeed = 500;
+        }
+
+        setTimeout(type, typeSpeed);
+      }
+
+      // Mulai delay
+      setTimeout(type, 1500);
+    </script>
+  </div>
 </div>

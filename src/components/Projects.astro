@@ -7,16 +7,16 @@ const projects = await getProjects();
 
 <!-- Daftar Proyek -->
 <section id="projects">
-    <div class="flex items-center gap-2 mb-10">
-        <span class="w-8 h-[2px] bg-indigo-500"></span>
-        <h2
-            class="text-sm font-mono text-slate-400 dark:text-slate-500 uppercase tracking-widest font-bold"
-        >
-            Selected Works
-        </h2>
-    </div>
+  <div class="flex items-center gap-2 mb-10">
+    <span class="w-8 h-[2px] bg-teal-500"></span>
+    <h2
+      class="text-sm font-mono text-slate-400 dark:text-slate-500 uppercase tracking-widest font-bold"
+    >
+      Selected Works
+    </h2>
+  </div>
 
-    <div class="grid gap-8">
-        {projects.map((project) => <ProjectCard {...project} />)}
-    </div>
+  <div class="grid gap-8">
+    {projects.map((project) => <ProjectCard {...project} />)}
+  </div>
 </section>
