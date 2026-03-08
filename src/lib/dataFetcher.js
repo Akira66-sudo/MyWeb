@@ -39,7 +39,7 @@ async function fetchWithFallback(type, localFallback) {
 
         const response = await fetch(url, { 
             signal: controller.signal,
-            cache: 'no-store' // Force fresh fetch, bypass Vercel cache
+            cache: 'no-store' // Force fresh fetch, bypass CDN cache
         });
         clearTimeout(timeoutId);
 
@@ -57,11 +57,18 @@ async function fetchWithFallback(type, localFallback) {
     }
 }
 
-// Helper ringkas
+/**
+ * Retrieves site data.
+ * @returns {Promise<any>} Site data object.
+ */
 export async function getSiteData() {
     return await fetchWithFallback('siteData', siteDataLocal);
 }
 
+/**
+ * Retrieves projects data.
+ * @returns {Promise<any[]>} Array of projects.
+ */
 export async function getProjects() {
     return await fetchWithFallback('projects', projectsLocal);
 }
