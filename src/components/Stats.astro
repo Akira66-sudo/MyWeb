@@ -1,0 +1,55 @@
+---
+import { getSiteData } from "../lib/dataFetcher";
+
+const { stats } = await getSiteData();
+---
+
+<section class="border-b-blueprint">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border-strong border border-border-strong">
+    
+    <div class="anim-fade-up bg-bg-base p-10 md:p-12 flex flex-col gap-6 group hover:bg-black/[0.02] transition-all duration-500 relative overflow-hidden">
+      <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-100 group-hover:text-python-blue transition-all">
+        <span class="mono text-[10px]">01</span>
+      </div>
+      <div class="flex flex-col gap-2">
+        <span class="counter-up serif text-6xl md:text-7xl font-bold text-text-primary group-hover:text-python-blue transition-colors duration-500" data-count={stats.stat_1_value}>0</span>
+        <span class="mono text-[10px] md:text-xs uppercase tracking-[0.3em] text-text-muted group-hover:text-text-primary transition-colors">{stats.stat_1_label}</span>
+      </div>
+      <div class="mt-4 h-0.5 w-8 bg-python-blue/20 group-hover:w-full transition-all duration-700"></div>
+    </div>
+
+    <div class="anim-fade-up delay-100 bg-bg-base p-10 md:p-12 flex flex-col gap-6 group hover:bg-black/[0.02] transition-all duration-500 relative overflow-hidden">
+      <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-100 group-hover:text-python-blue transition-all">
+        <span class="mono text-[10px]">02</span>
+      </div>
+      <div class="flex flex-col gap-2">
+        <span class="counter-up serif text-6xl md:text-7xl font-bold text-text-primary group-hover:text-python-blue transition-colors duration-500" data-count={stats.stat_2_value}>0</span>
+        <span class="mono text-[10px] md:text-xs uppercase tracking-[0.3em] text-text-muted group-hover:text-text-primary transition-colors">{stats.stat_2_label}</span>
+      </div>
+      <div class="mt-4 h-0.5 w-8 bg-python-blue/20 group-hover:w-full transition-all duration-700"></div>
+    </div>
+
+    <div class="anim-fade-up delay-200 bg-bg-base p-10 md:p-12 flex flex-col gap-6 group hover:bg-black/[0.02] transition-all duration-500 relative overflow-hidden">
+      <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-100 group-hover:text-python-blue transition-all">
+        <span class="mono text-[10px]">03</span>
+      </div>
+      <div class="flex flex-col gap-2">
+        <span class="counter-up serif text-6xl md:text-7xl font-bold text-text-primary group-hover:text-python-blue transition-colors duration-500" data-count={stats.stat_3_value}>0</span>
+        <span class="mono text-[10px] md:text-xs uppercase tracking-[0.3em] text-text-muted group-hover:text-text-primary transition-colors">{stats.stat_3_label}</span>
+      </div>
+      <div class="mt-4 h-0.5 w-8 bg-python-blue/20 group-hover:w-full transition-all duration-700"></div>
+    </div>
+
+    <div class="anim-fade-up delay-300 bg-black/[0.05] dark:bg-white/[0.05] p-10 md:p-12 flex flex-col gap-6 group hover:bg-black/[0.08] dark:hover:bg-white/[0.08] transition-all duration-500 relative overflow-hidden">
+      <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-100 group-hover:text-python-blue transition-all">
+        <span class="mono text-[10px]">04</span>
+      </div>
+      <div class="flex flex-col gap-2">
+        <span class="counter-up serif text-6xl md:text-7xl font-bold text-text-primary group-hover:text-python-blue transition-colors duration-500" data-count={stats.stat_4_value}>0</span>
+        <span class="mono text-[10px] md:text-xs uppercase tracking-[0.3em] text-text-muted group-hover:text-text-primary transition-colors">{stats.stat_4_label}</span>
+      </div>
+      <div class="mt-4 h-0.5 w-2/3 bg-python-blue/20 group-hover:w-full transition-all duration-700"></div>
+    </div>
+
+  </div>
+</section>

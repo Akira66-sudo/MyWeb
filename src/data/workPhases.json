@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1",
+    "phase_number": "01",
+    "title": "DISCOVERY & ARCHITECTURE",
+    "description": "My journey started with a deep curiosity about digital systems, evolving into building full-stack web applications and interactive games. I focus on designing scalable architectures that bridge clean logic with real-world functionality.",
+    "order_index": 1
+  },
+  {
+    "id": "2",
+    "phase_number": "02",
+    "title": "CRAFT & EXECUTION",
+    "description": "On the technical side, I work seamlessly across modern web frameworks, Python backends, and game engines like Godot. As a Fullstack Developer, my goal is to engineer high-quality digital products that set new standards.",
+    "order_index": 2
+  }
+]

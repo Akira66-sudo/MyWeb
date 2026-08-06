@@ -1,0 +1,365 @@
+---
+import { Image } from "astro:assets";
+import iconWebp from "../assets/images/icon.webp";
+---
+
+<!-- Mobile Fullscreen Overlay -->
+<div 
+  id="mobile-overlay" 
+  class="fixed inset-0 z-[200] bg-[#1C1C1A]/95 backdrop-blur-xl flex flex-col items-center justify-center opacity-0 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden"
+>
+  <button id="mobile-overlay-close" class="absolute top-8 right-8 text-white/50 hover:text-white transition-colors">
+    <i class="ri-close-line text-4xl"></i>
+  </button>
+  <div class="flex flex-col items-center justify-center gap-8 translate-y-10 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" id="mobile-menu-items">
+    <a href="#" class="mobile-nav-item font-serif text-3xl font-bold text-[#A8A8A4] hover:text-white transition-colors">Home</a>
+    <a href="#about" class="mobile-nav-item font-serif text-3xl font-bold text-[#A8A8A4] hover:text-white transition-colors">About</a>
+    <a href="#stack" class="mobile-nav-item font-serif text-3xl font-bold text-[#A8A8A4] hover:text-white transition-colors">Stack</a>
+    <a href="#work" class="mobile-nav-item font-serif text-3xl font-bold text-[#A8A8A4] hover:text-white transition-colors">Work</a>
+    <a href="#arcade" class="mobile-nav-item font-serif text-3xl font-bold text-[#A8A8A4] hover:text-white transition-colors">Arcade</a>
+    <a href="#contact" class="mobile-nav-item font-serif text-3xl font-bold text-[#A8A8A4] hover:text-white transition-colors">Contact</a>
+  </div>
+</div>
+
+<!-- Draggable Floating Nav Container -->
+<div id="nav-wrapper" class="fixed z-[100]" style="top: 24px; right: 24px; touch-action: none; user-select: none;">
+  
+  <!-- Nav Menu (position adjusted dynamically by JS) -->
+  <nav 
+    id="nav-menu" 
+    class="absolute h-12 md:h-16 hidden md:flex items-center px-1.5 py-1.5 bg-[#1C1C1A]/95 backdrop-blur-xl border border-white/10 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.3)] opacity-0 pointer-events-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] z-10 whitespace-nowrap max-w-[calc(100vw-6rem)] overflow-x-auto scrollbar-hide"
+  >
+    <a 
+      href="#" 
+      class="nav-item shrink-0 px-2 md:px-5 py-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-[#A8A8A4] hover:text-[#02B6E6] transition-colors rounded-full hover:bg-white/10"
+    >
+      Home
+    </a>
+    <a 
+      href="#about" 
+      class="nav-item shrink-0 px-1.5 md:px-5 py-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-[#A8A8A4] hover:text-[#02B6E6] transition-colors rounded-full hover:bg-white/10"
+    >
+      About
+    </a>
+    <a 
+      href="#stack" 
+      class="nav-item shrink-0 px-1.5 md:px-5 py-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-[#A8A8A4] hover:text-[#02B6E6] transition-colors rounded-full hover:bg-white/10"
+    >
+      Stack
+    </a>
+    <a 
+      href="#work" 
+      class="nav-item shrink-0 px-1.5 md:px-5 py-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-[#A8A8A4] hover:text-[#02B6E6] transition-colors rounded-full hover:bg-white/10"
+    >
+      Work
+    </a>
+    <a 
+      href="#arcade" 
+      class="nav-item shrink-0 px-1.5 md:px-5 py-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-[#A8A8A4] hover:text-[#02B6E6] transition-colors rounded-full hover:bg-white/10"
+    >
+      Arcade
+    </a>
+    <a 
+      href="#contact" 
+      class="nav-item shrink-0 px-3 md:px-6 py-2 md:py-2.5 bg-white text-[#1C1C1A] text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-[#F5F4F0] hover:scale-105 transition-all rounded-full ml-1 md:ml-2"
+    >
+      Contact
+    </a>
+  </nav>
+
+  <!-- Logo Trigger Button with Circular Progress -->
+  <div class="relative z-20 w-14 h-14 md:w-16 md:h-16 flex items-center justify-center group cursor-hover">
+    <!-- SVG Circular Progress -->
+    <svg class="absolute inset-0 w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2" />
+      <circle id="scroll-progress-ring" cx="32" cy="32" r="30" fill="none" stroke="#02B6E6" stroke-width="2" stroke-linecap="round" stroke-dasharray="188.4" stroke-dashoffset="188.4" class="transition-[stroke-dashoffset] duration-150 ease-out" />
+    </svg>
+
+    <button 
+      id="nav-toggle" 
+      aria-label="Toggle Menu"
+      class="magnetic-btn w-12 h-12 md:h-14 md:w-14 rounded-full p-1 bg-[#1C1C1A] shadow-[0_8px_30px_rgba(0,0,0,0.4)] group-hover:scale-110 active:scale-95 transition-transform duration-300 flex items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing"
+    >
+      <Image 
+        id="logo-img"
+        src={iconWebp} 
+        alt="zidan-idz emblem" 
+        class="w-full h-full object-cover rounded-full transition-transform duration-500 invert pointer-events-none" 
+        draggable="false"
+      />
+    </button>
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const wrapper   = document.getElementById("nav-wrapper") as HTMLElement;
+    const toggleBtn = document.getElementById("nav-toggle") as HTMLButtonElement;
+    const navMenu   = document.getElementById("nav-menu") as HTMLElement;
+    const navItems  = document.querySelectorAll(".nav-item");
+    const logoImg   = document.getElementById("logo-img") as HTMLImageElement;
+    
+    // Mobile Elements
+    const mobileOverlay = document.getElementById("mobile-overlay") as HTMLElement;
+    const mobileMenuItems = document.getElementById("mobile-menu-items") as HTMLElement;
+    const mobileNavItems = document.querySelectorAll(".mobile-nav-item");
+    const mobileCloseBtn = document.getElementById("mobile-overlay-close") as HTMLButtonElement;
+
+    if (!wrapper || !toggleBtn || !navMenu || !logoImg) return;
+
+    // ── Constants ────────────────────────────────────────────
+    const PADDING   = 20;   // px gap from screen edge
+    const BTN_SIZE  = 56;   // px (w-14 / h-14, approx)
+    const SNAP_KEY  = "nav-corner"; // localStorage key
+    const DRAG_THRESHOLD = 10; // Increased threshold for mobile
+
+    // Corner indices:  0=top-right  1=top-left  2=bottom-right  3=bottom-left
+    type Corner = 0 | 1 | 2 | 3;
+
+    let isOpen    = false;
+    let isDragging = false;
+    let currentCorner: Corner = (Number(localStorage.getItem(SNAP_KEY)) || 0) as Corner;
+
+    // ── Apply corner positioning ─────────────────────────────────
+    function applyCorner(corner: Corner, animate = true) {
+      currentCorner = corner;
+      localStorage.setItem(SNAP_KEY, String(corner));
+
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      let x: number, y: number;
+      if (corner === 0) { x = vw - BTN_SIZE - PADDING;  y = PADDING; }
+      else if (corner === 1) { x = PADDING;                        y = PADDING; }
+      else if (corner === 2) { x = vw - BTN_SIZE - PADDING;  y = vh - BTN_SIZE - PADDING; }
+      else                   { x = PADDING;                        y = vh - BTN_SIZE - PADDING; }
+
+      if (animate) wrapper.style.transition = "top 0.45s cubic-bezier(0.34,1.56,0.64,1), left 0.45s cubic-bezier(0.34,1.56,0.64,1)";
+      else         wrapper.style.transition = "none";
+
+      wrapper.style.top    = `${y}px`;
+      wrapper.style.left   = `${x}px`;
+      wrapper.style.right  = "";
+      wrapper.style.bottom = "";
+
+      positionMenu(corner);
+    }
+
+    // ── Position menu relative to button corner ───────────────
+    function positionMenu(corner: Corner) {
+      navMenu.style.top    = "";
+      navMenu.style.bottom = "";
+      navMenu.style.left   = "";
+      navMenu.style.right  = "";
+      navMenu.style.transform = "";
+
+      const GAP = 8;
+
+      if (corner === 0) {
+        navMenu.style.top   = "0";
+        navMenu.style.right = `${BTN_SIZE + GAP}px`;
+      } else if (corner === 1) {
+        navMenu.style.top  = "0";
+        navMenu.style.left = `${BTN_SIZE + GAP}px`;
+      } else if (corner === 2) {
+        navMenu.style.bottom = "0";
+        navMenu.style.right  = `${BTN_SIZE + GAP}px`;
+      } else {
+        navMenu.style.bottom = "0";
+        navMenu.style.left   = `${BTN_SIZE + GAP}px`;
+      }
+
+      if (isOpen) {
+        logoImg.style.transform = "scaleX(-1)";
+      } else {
+        logoImg.style.transform = "";
+      }
+    }
+
+    // ── Open / Close ──────────────────────────────────────────
+    function openMenu() {
+      isOpen = true;
+      toggleBtn.classList.add("ring-2", "ring-white/60");
+
+      if (window.innerWidth < 768) {
+        // Mobile popup overlay
+        mobileOverlay.classList.remove("opacity-0", "pointer-events-none");
+        mobileOverlay.classList.add("pointer-events-auto");
+        mobileMenuItems.classList.remove("translate-y-10");
+        if ((window as any).lenis) (window as any).lenis.stop();
+      } else {
+        // Desktop pill menu
+        navMenu.classList.remove("opacity-0", "pointer-events-none");
+        navMenu.classList.add("opacity-100", "pointer-events-auto");
+        
+        logoImg.style.transform = "scaleX(-1)";
+      }
+    }
+
+    function closeMenu() {
+      isOpen = false;
+      toggleBtn.classList.remove("ring-2", "ring-white/60");
+      logoImg.style.transform = "";
+      
+      // Close both just to be safe
+      mobileOverlay.classList.remove("pointer-events-auto");
+      mobileOverlay.classList.add("opacity-0", "pointer-events-none");
+      mobileMenuItems.classList.add("translate-y-10");
+      if ((window as any).lenis) (window as any).lenis.start();
+      
+      navMenu.classList.remove("opacity-100", "pointer-events-auto");
+      navMenu.classList.add("opacity-0", "pointer-events-none");
+    }
+
+    // Auto close on resize to prevent broken state
+    window.addEventListener('resize', () => {
+      if (isOpen) closeMenu();
+    });
+
+    mobileCloseBtn?.addEventListener('click', closeMenu);
+    
+    // Helper for smooth navigation
+    const handleNavClick = (item: Element) => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = item.getAttribute('href');
+        if (target) {
+          if ((window as any).lenis) {
+            (window as any).lenis.start();
+            (window as any).lenis.scrollTo(target);
+          } else {
+            window.location.hash = target;
+          }
+        }
+        closeMenu();
+      });
+    };
+
+    mobileNavItems.forEach(handleNavClick);
+    navItems.forEach(handleNavClick);
+
+    // ── Nearest corner snap ───────────────────────────────────
+    function snapToNearest(x: number, y: number): Corner {
+      const cx = x + BTN_SIZE / 2;
+      const cy = y + BTN_SIZE / 2;
+      const midX = window.innerWidth  / 2;
+      const midY = window.innerHeight / 2;
+
+      if (cx >= midX && cy <= midY) return 0; // top-right
+      if (cx <  midX && cy <= midY) return 1; // top-left
+      if (cx >= midX && cy >  midY) return 2; // bottom-right
+      return 3;                                // bottom-left
+    }
+
+    // ── Drag Logic ────────────────────────────────────────────
+    let startX = 0, startY = 0;
+    let startWrapX = 0, startWrapY = 0;
+    let dragMoved = false;
+
+    function onPointerDown(e: PointerEvent) {
+      if ((e.target as HTMLElement).closest("#nav-menu")) return;
+
+      startX = e.clientX;
+      startY = e.clientY;
+
+      const rect = wrapper.getBoundingClientRect();
+      startWrapX = rect.left;
+      startWrapY = rect.top;
+      dragMoved = false;
+      isDragging = false;
+
+      wrapper.style.transition = "none";
+
+      document.addEventListener("pointermove", onPointerMove);
+      document.addEventListener("pointerup", onPointerUp);
+    }
+
+    function onPointerMove(e: PointerEvent) {
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      if (!isDragging && Math.sqrt(dx*dx + dy*dy) > DRAG_THRESHOLD) {
+        isDragging = true;
+        dragMoved  = true;
+        if (isOpen) closeMenu();
+      }
+
+      if (!isDragging) return;
+
+      let newX = startWrapX + dx;
+      let newY = startWrapY + dy;
+
+      newX = Math.max(0, Math.min(window.innerWidth  - BTN_SIZE, newX));
+      newY = Math.max(0, Math.min(window.innerHeight - BTN_SIZE, newY));
+
+      wrapper.style.left = `${newX}px`;
+      wrapper.style.top  = `${newY}px`;
+    }
+
+    function onPointerUp(e: PointerEvent) {
+      document.removeEventListener("pointermove", onPointerMove);
+      document.removeEventListener("pointerup", onPointerUp);
+
+      if (isDragging) {
+        const rect = wrapper.getBoundingClientRect();
+        const corner = snapToNearest(rect.left, rect.top);
+        applyCorner(corner, true);
+        isDragging = false;
+        positionMenu(corner);
+      } else if (!dragMoved) {
+        if (e.target && toggleBtn.contains(e.target as Node)) {
+           if (isOpen) closeMenu();
+           else        openMenu();
+        }
+      }
+      dragMoved = false;
+    }
+
+    // ── Event Listeners ───────────────────────────────────────
+    toggleBtn.addEventListener("pointerdown", onPointerDown);
+
+    // Close menu when clicking outside
+    document.addEventListener("pointerdown", (e) => {
+      const target = e.target as Node;
+      if (isOpen && !navMenu.contains(target) && !toggleBtn.contains(target)) {
+        // Let the click event handle navigation if clicking on mobile links
+        if (mobileMenuItems.contains(target)) return;
+        closeMenu();
+      }
+    });
+
+
+
+    // ── Init: restore last corner ─────────────────────────────
+    applyCorner(currentCorner, false);
+
+    // Recalculate on resize
+    window.addEventListener("resize", () => {
+      applyCorner(currentCorner, false);
+    });
+
+    // ── Circular Scroll Progress ──────────────────────────────
+    const progressRing = document.getElementById('scroll-progress-ring') as SVGCircleElement;
+    if (progressRing) {
+      const circumference = 30 * 2 * Math.PI; // r=30
+      progressRing.style.strokeDasharray = `${circumference} ${circumference}`;
+      progressRing.style.strokeDashoffset = `${circumference}`;
+
+      const setProgress = (percent: number) => {
+        const offset = circumference - (percent / 100) * circumference;
+        progressRing.style.strokeDashoffset = String(offset);
+      };
+
+      const updateScroll = () => {
+        const scrollPx = document.documentElement.scrollTop || document.body.scrollTop;
+        const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = winHeightPx > 0 ? (scrollPx / winHeightPx) * 100 : 100;
+        setProgress(scrolled);
+      };
+
+      window.addEventListener('scroll', updateScroll, { passive: true });
+      updateScroll();
+    }
+  });
+</script>

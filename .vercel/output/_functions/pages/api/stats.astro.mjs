@@ -1,15 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 export { renderers } from '../../renderers.mjs';
 
-const views = 999;
-const likes = 666;
-const localStats = {
-  views,
-  likes,
-};
-
-const supabaseUrl = "https://vljgneamkzqptnxsoimu.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsamduZWFta3pxcHRueHNvaW11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc1NTMwNDcsImV4cCI6MjA4MzEyOTA0N30.1sZWyZ2uLOIHD-w3P5_cr3tGLpSmt2BNRLXwzXBcaeU";
+const localStats = { views: 0, likes: 0 };
+const supabaseUrl = "https://emkdrleoagjxyhpyhflt.supabase.co";
+const supabaseKey = "sb_publishable_vLSNWb-12yQVsXQRjoLtfg_dDCqQXM1";
 let supabase = null;
 try {
   if (supabaseUrl && supabaseKey) {
@@ -96,10 +90,10 @@ async function POST({ request }) {
 }
 
 const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
-    __proto__: null,
-    GET,
-    POST,
-    prerender
+  __proto__: null,
+  GET,
+  POST,
+  prerender
 }, Symbol.toStringTag, { value: 'Module' }));
 
 const page = () => _page;

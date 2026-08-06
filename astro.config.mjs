@@ -7,12 +7,15 @@ import sitemap from '@astrojs/sitemap';
 // Dokumentasi Konfigurasi: https://astro.build/config
 export default defineConfig({
   site: 'https://zidan-idz.my.id',
-  output: 'server',
+  output: 'static',
   adapter: vercel({
     webAnalytics: {
       enabled: true,
     },
   }),
+  image: {
+    domains: ['picsum.photos'],
+  },
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()]

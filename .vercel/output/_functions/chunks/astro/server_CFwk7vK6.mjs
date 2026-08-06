@@ -21,6 +21,76 @@ const nodeRequestAbortControllerCleanupSymbol = Symbol.for(
 );
 const responseSentSymbol = Symbol.for("astro.responseSent");
 
+function normalizeLF(code) {
+  return code.replace(/\r\n|\r(?!\n)|\n/g, "\n");
+}
+
+function codeFrame(src, loc) {
+  if (!loc || loc.line === void 0 || loc.column === void 0) {
+    return "";
+  }
+  const lines = normalizeLF(src).split("\n").map((ln) => ln.replace(/\t/g, "  "));
+  const visibleLines = [];
+  for (let n = -2; n <= 2; n++) {
+    if (lines[loc.line + n]) visibleLines.push(loc.line + n);
+  }
+  let gutterWidth = 0;
+  for (const lineNo of visibleLines) {
+    let w = `> ${lineNo}`;
+    if (w.length > gutterWidth) gutterWidth = w.length;
+  }
+  let output = "";
+  for (const lineNo of visibleLines) {
+    const isFocusedLine = lineNo === loc.line - 1;
+    output += isFocusedLine ? "> " : "  ";
+    output += `${lineNo + 1} | ${lines[lineNo]}
+`;
+    if (isFocusedLine)
+      output += `${Array.from({ length: gutterWidth }).join(" ")}  | ${Array.from({
+        length: loc.column
+      }).join(" ")}^
+`;
+  }
+  return output;
+}
+
+class AstroError extends Error {
+  loc;
+  title;
+  hint;
+  frame;
+  type = "AstroError";
+  constructor(props, options) {
+    const { name, title, message, stack, location, hint, frame } = props;
+    super(message, options);
+    this.title = title;
+    this.name = name;
+    if (message) this.message = message;
+    this.stack = stack ? stack : this.stack;
+    this.loc = location;
+    this.hint = hint;
+    this.frame = frame;
+  }
+  setLocation(location) {
+    this.loc = location;
+  }
+  setName(name) {
+    this.name = name;
+  }
+  setMessage(message) {
+    this.message = message;
+  }
+  setHint(hint) {
+    this.hint = hint;
+  }
+  setFrame(source, location) {
+    this.frame = codeFrame(source, location);
+  }
+  static is(err) {
+    return err?.type === "AstroError";
+  }
+}
+
 const ClientAddressNotAvailable = {
   name: "ClientAddressNotAvailable",
   title: "`Astro.clientAddress` is not available in current adapter.",
@@ -322,76 +392,6 @@ const SessionStorageSaveError = {
   message: (error, driver) => `Error when saving session data${driver ? ` with driver \`${driver}\`` : ""}. \`${error ?? ""}\``,
   hint: "For more information, see https://docs.astro.build/en/guides/sessions/"
 };
-
-function normalizeLF(code) {
-  return code.replace(/\r\n|\r(?!\n)|\n/g, "\n");
-}
-
-function codeFrame(src, loc) {
-  if (!loc || loc.line === void 0 || loc.column === void 0) {
-    return "";
-  }
-  const lines = normalizeLF(src).split("\n").map((ln) => ln.replace(/\t/g, "  "));
-  const visibleLines = [];
-  for (let n = -2; n <= 2; n++) {
-    if (lines[loc.line + n]) visibleLines.push(loc.line + n);
-  }
-  let gutterWidth = 0;
-  for (const lineNo of visibleLines) {
-    let w = `> ${lineNo}`;
-    if (w.length > gutterWidth) gutterWidth = w.length;
-  }
-  let output = "";
-  for (const lineNo of visibleLines) {
-    const isFocusedLine = lineNo === loc.line - 1;
-    output += isFocusedLine ? "> " : "  ";
-    output += `${lineNo + 1} | ${lines[lineNo]}
-`;
-    if (isFocusedLine)
-      output += `${Array.from({ length: gutterWidth }).join(" ")}  | ${Array.from({
-        length: loc.column
-      }).join(" ")}^
-`;
-  }
-  return output;
-}
-
-class AstroError extends Error {
-  loc;
-  title;
-  hint;
-  frame;
-  type = "AstroError";
-  constructor(props, options) {
-    const { name, title, message, stack, location, hint, frame } = props;
-    super(message, options);
-    this.title = title;
-    this.name = name;
-    if (message) this.message = message;
-    this.stack = stack ? stack : this.stack;
-    this.loc = location;
-    this.hint = hint;
-    this.frame = frame;
-  }
-  setLocation(location) {
-    this.loc = location;
-  }
-  setName(name) {
-    this.name = name;
-  }
-  setMessage(message) {
-    this.message = message;
-  }
-  setHint(hint) {
-    this.hint = hint;
-  }
-  setFrame(source, location) {
-    this.frame = codeFrame(source, location);
-  }
-  static is(err) {
-    return err?.type === "AstroError";
-  }
-}
 
 function validateArgs(args) {
   if (args.length !== 3) return false;
@@ -2784,4 +2784,4 @@ function spreadAttributes(values = {}, _name, { class: scopedClassName } = {}) {
   return markHTMLString(output);
 }
 
-export { isRenderInstruction as $, AstroError as A, ActionNotFoundError as B, MiddlewareNoDataOrNextCalled as C, MiddlewareNotAResponse as D, ExpectedImage as E, FailedToFetchRemoteImageDimensions as F, originPathnameSymbol as G, RewriteWithBodyUsed as H, IncompatibleDescriptorOptions as I, GetStaticPathsRequired as J, InvalidGetStaticPathsReturn as K, LocalImageUsedWrongly as L, MissingImageDimension as M, NoImageMetadata as N, InvalidGetStaticPathsEntry as O, GetStaticPathsExpectedParams as P, GetStaticPathsInvalidRouteParam as Q, ROUTE_TYPE_HEADER as R, PageNumberParamNotFound as S, DEFAULT_404_COMPONENT as T, UnsupportedImageFormat as U, NoMatchingStaticPathFound as V, PrerenderDynamicEndpointPathCollide as W, ReservedSlotName as X, renderSlotToString as Y, renderJSX as Z, chunkToString as _, UnsupportedImageConversion as a, ForbiddenRewrite as a0, SessionStorageInitError as a1, SessionStorageSaveError as a2, ASTRO_VERSION as a3, CspNotEnabled as a4, LocalsReassigned as a5, generateCspDigest as a6, PrerenderClientAddressNotAvailable as a7, clientAddressSymbol as a8, ClientAddressNotAvailable as a9, StaticClientAddressNotAvailable as aa, AstroResponseHeadersReassigned as ab, responseSentSymbol as ac, renderPage as ad, REWRITE_DIRECTIVE_HEADER_KEY as ae, REWRITE_DIRECTIVE_HEADER_VALUE as af, renderEndpoint as ag, LocalsNotAnObject as ah, REROUTABLE_STATUS_CODES as ai, nodeRequestAbortControllerCleanupSymbol as aj, NOOP_MIDDLEWARE_HEADER as ak, REDIRECT_STATUS_CODES as al, ActionsReturnedInvalidDataError as am, MissingSharp as an, ExpectedImageOptions as b, ExpectedNotESMImage as c, InvalidImageService as d, createAstro as e, createComponent as f, ImageMissingAlt as g, addAttribute as h, ExperimentalFontsNotEnabled as i, FontFamilyNotFound as j, renderScript as k, renderComponent as l, maybeRenderHead as m, renderSlot as n, renderHead as o, decodeKey as p, decryptString as q, renderTemplate as r, spreadAttributes as s, toStyleString as t, unescapeHTML as u, createSlotValueFromString as v, isAstroComponentFactory as w, REROUTE_DIRECTIVE_HEADER as x, i18nNoLocaleFoundInPath as y, ResponseSentError as z };
+export { renderSlotToString as $, AstroError as A, nodeRequestAbortControllerCleanupSymbol as B, decryptString as C, DEFAULT_404_COMPONENT as D, ExpectedImage as E, FailedToFetchRemoteImageDimensions as F, createSlotValueFromString as G, isAstroComponentFactory as H, IncompatibleDescriptorOptions as I, i18nNoLocaleFoundInPath as J, ResponseSentError as K, LocalImageUsedWrongly as L, MissingImageDimension as M, NoImageMetadata as N, originPathnameSymbol as O, RewriteWithBodyUsed as P, GetStaticPathsRequired as Q, ROUTE_TYPE_HEADER as R, InvalidGetStaticPathsReturn as S, InvalidGetStaticPathsEntry as T, UnsupportedImageFormat as U, GetStaticPathsExpectedParams as V, GetStaticPathsInvalidRouteParam as W, PageNumberParamNotFound as X, NoMatchingStaticPathFound as Y, PrerenderDynamicEndpointPathCollide as Z, ReservedSlotName as _, renderHead as a, renderJSX as a0, chunkToString as a1, isRenderInstruction as a2, MiddlewareNoDataOrNextCalled as a3, MiddlewareNotAResponse as a4, SessionStorageInitError as a5, SessionStorageSaveError as a6, ForbiddenRewrite as a7, ASTRO_VERSION as a8, CspNotEnabled as a9, LocalsReassigned as aa, generateCspDigest as ab, PrerenderClientAddressNotAvailable as ac, ClientAddressNotAvailable as ad, StaticClientAddressNotAvailable as ae, AstroResponseHeadersReassigned as af, renderPage as ag, REWRITE_DIRECTIVE_HEADER_KEY as ah, REWRITE_DIRECTIVE_HEADER_VALUE as ai, renderEndpoint as aj, NOOP_MIDDLEWARE_HEADER as ak, REDIRECT_STATUS_CODES as al, ActionsReturnedInvalidDataError as am, MissingSharp as an, renderComponent as b, createComponent as c, renderScript as d, createAstro as e, renderSlot as f, addAttribute as g, UnsupportedImageConversion as h, ExpectedImageOptions as i, ExpectedNotESMImage as j, InvalidImageService as k, ImageMissingAlt as l, maybeRenderHead as m, ExperimentalFontsNotEnabled as n, FontFamilyNotFound as o, decodeKey as p, REROUTE_DIRECTIVE_HEADER as q, renderTemplate as r, spreadAttributes as s, toStyleString as t, unescapeHTML as u, ActionNotFoundError as v, clientAddressSymbol as w, LocalsNotAnObject as x, REROUTABLE_STATUS_CODES as y, responseSentSymbol as z };

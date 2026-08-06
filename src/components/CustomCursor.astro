@@ -1,0 +1,120 @@
+---
+// CustomCursor.astro
+---
+
+<div id="custom-cursor-dot" class="fixed top-0 left-0 w-2 h-2 bg-[#02B6E6] rounded-full pointer-events-none z-[9999] opacity-0 transition-opacity duration-300 transform -translate-x-1/2 -translate-y-1/2 hidden md:block"></div>
+<div id="custom-cursor-ring" class="fixed top-0 left-0 w-8 h-8 border border-[#02B6E6]/50 rounded-full pointer-events-none z-[9998] opacity-0 transition-opacity duration-300 transform -translate-x-1/2 -translate-y-1/2 hidden md:block"></div>
+
+<style is:global>
+  @media (pointer: fine) {
+    body {
+      cursor: none;
+    }
+    a, button, input, textarea, select {
+      cursor: none;
+    }
+    input, textarea {
+      cursor: text;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Only run on non-touch devices
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+
+    const dot = document.getElementById("custom-cursor-dot");
+    const ring = document.getElementById("custom-cursor-ring");
+    
+    if (!dot || !ring) return;
+
+    let mouseX = -100;
+    let mouseY = -100;
+    let ringX = -100;
+    let ringY = -100;
+    let isHovering = false;
+    let isVisible = false;
+
+    // Show cursor on first move
+    window.addEventListener("mousemove", (e) => {
+      if (!isVisible) {
+        dot.style.opacity = "1";
+        ring.style.opacity = "1";
+        isVisible = true;
+      }
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    // Hide cursor when it leaves the window
+    document.addEventListener("mouseleave", () => {
+      dot.style.opacity = "0";
+      ring.style.opacity = "0";
+      isVisible = false;
+    });
+
+    // Animation Loop
+    const render = () => {
+      // Dot follows instantly
+      dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+      
+      // Ring follows with lerp (delay)
+      ringX += (mouseX - ringX) * 0.15;
+      ringY += (mouseY - ringY) * 0.15;
+      
+      if (isHovering) {
+        ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%) scale(1.5)`;
+        ring.style.backgroundColor = "rgba(2, 182, 230, 0.1)";
+        dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%) scale(0)`;
+      } else {
+        ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%) scale(1)`;
+        ring.style.backgroundColor = "transparent";
+      }
+
+      requestAnimationFrame(render);
+    };
+    
+    requestAnimationFrame(render);
+
+    // Hover effect logic
+    const attachHoverEvents = () => {
+      const interactiveElements = document.querySelectorAll('a, button, .cursor-hover');
+      interactiveElements.forEach((el) => {
+        el.addEventListener("mouseenter", () => isHovering = true);
+        el.addEventListener("mouseleave", () => isHovering = false);
+      });
+    };
+
+    attachHoverEvents();
+
+    // Re-attach if DOM changes (optional, but good for dynamic content)
+    const observer = new MutationObserver(attachHoverEvents);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // ── MAGNETIC BUTTONS LOGIC ──
+    const attachMagneticEvents = () => {
+      const magneticElements = document.querySelectorAll('.magnetic-btn');
+      magneticElements.forEach((elem) => {
+        const el = elem as HTMLElement;
+        // prevent attaching multiple times
+        if (el.dataset.magneticAttached) return;
+        el.dataset.magneticAttached = "true";
+
+        el.addEventListener('mousemove', (e) => {
+          const rect = el.getBoundingClientRect();
+          const h = rect.width / 2;
+          const v = rect.height / 2;
+          const x = e.clientX - rect.left - h;
+          const y = e.clientY - rect.top - v;
+          
+          el.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+        });
+        el.addEventListener('mouseleave', () => {
+          el.style.transform = `translate(0px, 0px)`;
+        });
+      });
+    };
+    attachMagneticEvents();
+  });
+</script>

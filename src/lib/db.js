@@ -1,7 +1,7 @@
 import { DEV_CONFIG } from '../config/dev.config';
 import { createClient } from '@supabase/supabase-js';
-import localStats from '../data/stats.json';
 
+const localStats = { views: 0, likes: 0 };
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
 const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 

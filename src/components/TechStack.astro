@@ -1,143 +1,93 @@
 ---
-import { getSiteData } from "../lib/dataFetcher";
-const siteData = await getSiteData();
+import { getSiteData, getTechStacks } from "../lib/dataFetcher";
+const { identity } = await getSiteData();
+const techStacks = await getTechStacks();
+
+// Convert directly from the new JSON format which is already grouped
+const groups = techStacks.map(group => ({
+  label: group.category,
+  items: group.skills || []
+}));
+
+// We can still use the hardcoded icons for the Core Ecosystem visual matrix,
+// but we only display the ones we mapped earlier. Alternatively, if icon_svg was populated in DB, we could use that.
+// For now, I will keep the icon matrix using the simpleicons list as a visual flair, 
+// or maybe rely on the names. The design for "Core Ecosystem" used a specific array.
+// We'll keep the predefined array for the visual matrix to preserve the UI wow factor,
+// but the actual lists above it are fully dynamic.
 ---
 
-<!-- Keahlian (Grid Bento) -->
-<section id="skills">
-  <div class="flex items-center gap-3 mb-6">
-    <span class="w-6 h-[2px] bg-teal-500"></span>
-    <h2
-      class="text-xs font-mono text-slate-500 uppercase tracking-widest font-bold"
-    >
-      Tech Stack
-    </h2>
+<section id="stack" class="relative overflow-hidden border-b-blueprint">
+  
+  <div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr]">
+    
+    <!-- Title Area -->
+    <div class="py-8 px-4 md:py-12 md:px-12 lg:py-16 lg:px-16 border-b md:border-b-0 lg:border-r border-border-strong flex flex-col justify-center">
+      <div class="anim-fade-up flex items-center gap-4 mb-8">
+        <div class="w-10 h-px bg-python-blue"></div>
+        <div class="mono text-[10px] uppercase tracking-widest font-bold text-python-blue">
+          MODERN TECH STACK
+        </div>
+      </div>
+      <h2 class="anim-fade-up delay-100 text-huge font-serif font-black tracking-tight leading-[0.9] mb-8">
+        The<br/>
+        <span class="italic text-text-muted">Technical</span><br/>
+        Matrix.
+      </h2>
+      <p class="anim-fade-up delay-200 text-lg md:text-xl text-text-secondary font-medium max-w-md">
+        {identity.tech_description || "A high-performance architecture built with the best tools in the industry."}
+      </p>
+    </div>
+
+    <!-- Stack List -->
+    <div class="flex flex-col">
+      {groups.map((group, i) => (
+        <div class="flex-1 py-8 px-4 md:py-12 md:px-12 border-b border-border-strong last:border-b-0 flex flex-col justify-center group hover:bg-black/[0.02] transition-colors">
+          <div class="flex items-center justify-between mb-4">
+            <span class="mono text-[10px] font-bold text-text-muted group-hover:text-python-blue transition-colors">0{i + 1}</span>
+            <span class="text-xl font-bold uppercase tracking-tight">{group.label}</span>
+          </div>
+          <div class="flex flex-wrap justify-end gap-3 mt-4">
+            {group.items.map(item => (
+              <span class="text-sm md:text-base text-text-secondary font-medium">{item}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+    
   </div>
 
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-    <!-- Bahasa Pemrograman (Inti) -->
-    <div
-      class="col-span-2 row-span-2 bg-gradient-to-br from-teal-50/70 to-white dark:from-teal-900/20 dark:to-[#252d3a] p-5 rounded-2xl border border-teal-200/40 dark:border-teal-500/30 relative overflow-hidden group hover:border-teal-300/60 dark:hover:border-teal-500/50 transition-all shadow-sm"
-    >
-      <div class="absolute -right-4 -bottom-4 opacity-10">
-        <i class="ri-braces-line text-[120px]"></i>
-      </div>
-      <div class="flex items-center justify-between mb-3 relative z-10">
-        <h3
-          class="font-bold text-teal-500 dark:text-teal-300 text-xs uppercase tracking-wider opacity-90"
-        >
-          Languages
-        </h3>
-        <i class="ri-code-line text-xl text-teal-500/50 dark:text-teal-300/50"
-        ></i>
-      </div>
-      <div class="grid grid-cols-2 gap-2 relative z-10">
-        {
-          siteData.languages.map((lang) => (
-            <div class="p-2.5 bg-white/80 dark:bg-[#151a26] rounded-lg border border-slate-200/50 dark:border-[#3d4555]">
-              <span class="block text-slate-900 dark:text-slate-100 font-bold text-sm">
-                {lang.name}
-              </span>
-              <span
-                class={`block text-[10px] ${lang.isPrimary ? "text-emerald-600 dark:text-emerald-400" : "text-slate-500 dark:text-slate-500"} font-mono`}
-              >
-                {lang.status}
-              </span>
-            </div>
-          ))
-        }
-      </div>
-    </div>
+  <!-- Visual Tech Matrix (Icon Grid) -->
+  <div class="border-t border-border-strong py-16 md:py-24 flex flex-col items-center relative overflow-hidden">
+    <!-- Architectural Grid Background -->
+    <div class="absolute inset-0 z-0 opacity-[0.03]" style="background-image: linear-gradient(var(--text-primary) 1px, transparent 1px), linear-gradient(90deg, var(--text-primary) 1px, transparent 1px); background-size: 80px 80px;"></div>
 
-    <!-- Teknologi Web -->
-    <div
-      class="col-span-1 row-span-2 bg-white dark:bg-[#252d3a] p-4 rounded-2xl border border-slate-200/70 dark:border-[#3d4555] flex flex-col group hover:border-slate-300/80 dark:hover:border-[#4a5568] transition-colors shadow-sm"
-    >
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="font-bold text-xs text-teal-600 dark:text-teal-400">
-          Web Stack
-        </h3>
-        <i
-          class="ri-global-line text-2xl text-slate-200 dark:text-slate-700 group-hover:text-teal-500/50 dark:group-hover:text-teal-400/50 transition-colors"
-        ></i>
+    <div class="w-full max-w-[1400px] mx-auto px-4 md:px-12 relative z-10">
+      
+      <div class="anim-fade-up flex items-center justify-center gap-4 mb-12 md:mb-16">
+        <div class="w-8 md:w-12 h-px bg-border-strong"></div>
+        <span class="mono text-[9px] md:text-[10px] tracking-widest text-text-muted uppercase font-bold">CORE ECOSYSTEM</span>
+        <div class="w-8 md:w-12 h-px bg-border-strong"></div>
       </div>
-      <ul
-        class="text-[10px] space-y-2 font-mono text-slate-600 dark:text-slate-400 font-bold"
-      >
-        {siteData.webStack.map((item) => <li>{item}</li>)}
-      </ul>
-    </div>
-
-    <!-- Data & Cloud -->
-    <div
-      class="col-span-1 row-span-2 bg-white dark:bg-[#252d3a] p-4 rounded-2xl border border-slate-200/70 dark:border-[#3d4555] flex flex-col group hover:border-slate-300/80 dark:hover:border-[#4a5568] transition-colors shadow-sm"
-    >
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="font-bold text-xs text-teal-600 dark:text-teal-400">Data</h3>
-        <i
-          class="ri-database-2-line text-2xl text-slate-200 dark:text-slate-700 group-hover:text-teal-500/50 dark:group-hover:text-teal-400/50 transition-colors"
-        ></i>
-      </div>
-      <ul
-        class="text-[10px] space-y-2 font-mono text-slate-600 dark:text-slate-400 font-bold"
-      >
-        {siteData.dataStack.map((item) => <li>{item}</li>)}
-      </ul>
-    </div>
-
-    <!-- Desain -->
-    <div
-      class="col-span-2 bg-white dark:bg-[#252d3a] p-4 rounded-2xl border border-slate-200/70 dark:border-[#3d4555] flex items-center justify-between hover:border-slate-300/80 dark:hover:border-[#4a5568] transition-colors shadow-sm"
-    >
-      <div>
-        <h3
-          class="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase tracking-wider mb-1"
-        >
-          Design Philosophy
-        </h3>
-        <p class="text-slate-900 dark:text-slate-100 font-bold text-xs">
-          <span class="text-teal-400">Zen Design</span> & Material
-        </p>
-      </div>
-      <div
-        class="w-6 h-6 rounded-full bg-slate-50 dark:bg-[#3d4555] flex items-center justify-center"
-      >
-        <i class="ri-palette-line text-teal-400 text-xs"></i>
-      </div>
-    </div>
-
-    <!-- Alat & Pengembangan Game -->
-    <div
-      class="col-span-2 bg-white dark:bg-[#252d3a] p-4 rounded-2xl border border-slate-200/70 dark:border-[#3d4555] flex items-center justify-between hover:border-slate-300/80 dark:hover:border-[#4a5568] transition-colors shadow-sm"
-    >
-      <div class="flex gap-4">
-        <div>
-          <h3
-            class="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase tracking-wider mb-1"
-          >
-            Tools
-          </h3>
-          <p class="text-slate-900 dark:text-slate-100 font-bold text-xs">
-            {siteData.tools.join(" • ")}
-          </p>
-        </div>
-        <div class="w-[1px] h-full bg-slate-200 dark:bg-[#3d4555]"></div>
-        <div>
-          <h3
-            class="font-bold text-slate-400 dark:text-slate-500 text-[10px] uppercase tracking-wider mb-1"
-          >
-            Game Dev
-          </h3>
-          <p class="text-slate-900 dark:text-slate-100 font-bold text-xs">
-            {siteData.gameDev.join(" • ")}
-          </p>
-        </div>
-      </div>
-      <div
-        class="w-6 h-6 rounded-full bg-slate-50 dark:bg-[#3d4555] flex items-center justify-center"
-      >
-        <i class="ri-terminal-box-line text-teal-400 text-xs"></i>
+      
+      <div class="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-y-6 md:gap-y-12 gap-x-8 md:gap-16 place-items-center">
+        {[
+          "html5", "css3", "javascript", "tailwindcss", "bootstrap", "astro",
+          "python", "django", "flask", "fastapi", "php", "laravel",
+          "postgresql", "mysql", "sqlite", "supabase", "firebase", 
+          "godotengine", "git", "github", "linux"
+        ].map(slug => (
+          <div class="group relative flex items-center justify-center p-4">
+            <img 
+              src={`https://cdn.simpleicons.org/${slug}`} 
+              alt={slug}
+              class="w-10 h-10 md:w-14 md:h-14 opacity-20 grayscale brightness-0 group-hover:opacity-100 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110 transition-all duration-500 object-contain drop-shadow-sm"
+            />
+          </div>
+        ))}
       </div>
     </div>
   </div>
+
 </section>

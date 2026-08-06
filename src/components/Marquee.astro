@@ -1,0 +1,23 @@
+---
+interface Props {
+  text: string;
+}
+const { text } = Astro.props;
+// create array to repeat text
+const items = Array(6).fill(text);
+---
+
+<div class="w-full overflow-hidden bg-text-primary text-bg-base py-3 border-y border-black">
+  <div class="whitespace-nowrap flex">
+    <div class="animate-marquee flex items-center gap-8">
+      {items.map((item) => (
+        <span class="mono text-sm md:text-base font-bold uppercase tracking-[0.2em]">{item}</span>
+      ))}
+    </div>
+    <div class="animate-marquee flex items-center gap-8" aria-hidden="true">
+      {items.map((item) => (
+        <span class="mono text-sm md:text-base font-bold uppercase tracking-[0.2em]">{item}</span>
+      ))}
+    </div>
+  </div>
+</div>

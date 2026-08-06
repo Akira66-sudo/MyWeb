@@ -1,107 +1,80 @@
 ---
 import { getSiteData } from "../lib/dataFetcher";
-const siteData = await getSiteData();
+import { Image } from "astro:assets";
+import heroBg from "../assets/images/hero-bg.jpg";
+const { identity } = await getSiteData();
 ---
 
-<!-- Profil & Intro -->
-<div class="space-y-5">
-  <!-- Foto Profil -->
-  <div class="relative w-24 h-24 lg:w-28 lg:h-28">
-    <div
-      class="absolute inset-0 bg-teal-500/20 rounded-full blur-xl animate-pulse"
-    >
-    </div>
-    <img
-      src="/me.webp"
-      alt="Zidan"
-      class="relative w-full h-full object-cover rounded-full border-2 border-slate-800 shadow-2xl"
+<section class="relative min-h-screen flex flex-col justify-center items-center overflow-hidden pt-20 md:pt-32 pb-10 border-b-blueprint">
+  <!-- Background Image Overlay -->
+  <div class="absolute inset-0 z-0">
+    <Image 
+      src={heroBg} 
+      alt="Zen Workspace" 
+      class="w-full h-full object-cover opacity-[0.15]" 
+      style="filter: grayscale(100%) contrast(1.2);"
+      loading="eager"
     />
-
-    <!-- Badge Status Floating -->
-    <div
-      class="absolute -bottom-1 -right-1 bg-white dark:bg-[#252d3a] border border-slate-300/50 dark:border-[#3d4555] px-1.5 py-0.5 lg:px-2 lg:py-0.5 rounded-full flex items-center gap-1.5 shadow-lg scale-90 lg:scale-100 origin-bottom-right"
-    >
-      <span
-        class="w-1 lg:w-1.5 h-1 lg:h-1.5 rounded-full bg-emerald-500 animate-pulse"
-      ></span>
-      <span
-        class="text-[8px] lg:text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider"
-        >Busy</span
-      >
-    </div>
+    <div class="absolute inset-0 bg-gradient-to-b from-bg-base/30 via-transparent to-bg-base"></div>
   </div>
 
-  <div>
-    <!-- Judul Utama (Typewriter) -->
-    <h1
-      class="text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-slate-100 leading-tight mb-2 tracking-tight min-h-[6rem] lg:min-h-[6.25rem] pt-0"
-    >
-      <span id="typewriter-text"></span><span
-        class="text-teal-500 animate-cursor-blink">_</span
-      >
-    </h1>
-    <p
-      class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium max-w-sm"
-    >
-      {siteData.identity.introStart}
-      <span class="text-teal-600 dark:text-teal-400 font-semibold"
-        >{siteData.identity.introHighlight}</span
-      >
+  <div class="relative z-10 w-full max-w-[1400px] mx-auto flex flex-col items-center text-center gap-6 md:gap-8 px-4 md:px-12">
+    
+    <!-- Eyebrow text -->
+    <div class="anim-fade-up flex items-center gap-3 px-4 py-2 border border-border-strong bg-white/70 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-full hover:scale-105 transition-transform cursor-default">
+      <div class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#02B6E6] opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#02B6E6]"></span>
+      </div>
+      <span class="mono text-[9px] md:text-[10px] tracking-[0.2em] uppercase font-bold text-text-primary">
+        {identity.role || "FULLSTACK DEVELOPER"}
+      </span>
+    </div>
+
+    <!-- Giant Title -->
+    <div class="flex flex-col items-center gap-4 md:gap-6">
+      <h1 class="anim-fade-up delay-100 text-giant font-black text-text-primary leading-[1.1] tracking-tighter max-w-5xl">
+        {identity.name || "Muhammad Raid Zaidani."}
+      </h1>
+      <div class="anim-fade-up delay-200 h-px bg-text-primary w-12 md:w-24"></div>
+    </div>
+
+    <!-- Bio Subtitle -->
+    <p class="anim-fade-up delay-200 text-sm md:text-lg text-text-primary/80 leading-relaxed max-w-2xl font-medium">
+      {identity.hero_bio}
     </p>
 
-    <script is:inline>
-      const textElement = document.getElementById("typewriter-text");
-      const phrases = [
-        "Web & Game\nDeveloper.",
-        "From Lombok,\nIndonesia.",
-        "Loves Minimal,\nBeautiful & Personal.",
-      ];
-      let phraseIndex = 0;
-      let charIndex = 0;
-      let isDeleting = false;
+    <!-- CTAs -->
+    <div class="anim-fade-up delay-300 flex flex-col sm:flex-row items-center gap-4 mt-8 cursor-hover">
+      <a 
+        href="#work" 
+        class="magnetic-btn group relative w-full sm:w-auto flex items-center justify-center px-8 py-4 bg-text-primary text-bg-base font-bold tracking-widest uppercase text-[10px] md:text-xs rounded-full overflow-hidden hover:scale-105 transition-transform duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.2)]"
+      >
+        <span class="relative z-10 flex items-center gap-2">
+          EXPLORE WORK
+          <i class="ri-arrow-right-down-line text-sm group-hover:translate-x-1 group-hover:translate-y-1 transition-transform"></i>
+        </span>
+        <!-- Shine effect on hover -->
+        <div class="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-out z-0"></div>
+      </a>
+      <a 
+        href={identity.resume_url || "#"} 
+        target="_blank"
+        rel="noopener noreferrer"
+        class="magnetic-btn group relative w-full sm:w-auto flex items-center justify-center px-8 py-4 border border-border-strong bg-white/70 backdrop-blur-md text-text-primary font-bold tracking-widest uppercase text-[10px] md:text-xs rounded-full hover:border-text-primary transition-transform duration-500 shadow-sm"
+      >
+        <span class="relative z-10 flex items-center gap-2">
+          DOWNLOAD CV
+          <i class="ri-download-line text-sm text-[#02B6E6] group-hover:scale-110 transition-transform"></i>
+        </span>
+      </a>
+    </div>
 
-      function type() {
-        const currentPhrase = phrases[phraseIndex];
-
-        if (isDeleting) {
-          // Hapus teks (Cepat)
-          // Cek baris baru HTML
-          if (textElement.innerHTML.endsWith("<br>")) {
-            textElement.innerHTML = textElement.innerHTML.slice(0, -4);
-            charIndex--; // Logika potong sederhana
-          } else {
-            textElement.innerText = currentPhrase.substring(0, charIndex - 1);
-          }
-          charIndex--;
-        } else {
-          // Logika pengetikan
-          const char = currentPhrase.charAt(charIndex);
-          if (char === "\n") {
-            textElement.innerHTML += "<br>";
-          } else {
-            textElement.innerText += char;
-          }
-          charIndex++;
-        }
-
-        let typeSpeed = isDeleting ? 30 : 80;
-
-        if (!isDeleting && charIndex === currentPhrase.length) {
-          // Selesai mengetik
-          typeSpeed = 2000; // Jeda akhir
-          isDeleting = true;
-        } else if (isDeleting && charIndex === 0) {
-          // Selesai menghapus
-          isDeleting = false;
-          phraseIndex = (phraseIndex + 1) % phrases.length;
-          typeSpeed = 500;
-        }
-
-        setTimeout(type, typeSpeed);
-      }
-
-      // Mulai delay
-      setTimeout(type, 1500);
-    </script>
   </div>
-</div>
+
+  <!-- Scroll Indicator -->
+  <div class="relative z-10 anim-fade-up delay-400 opacity-30 hidden sm:flex flex-col items-center gap-4 mt-12 md:mt-24 pb-8">
+    <span class="mono text-[9px] uppercase tracking-widest">SCROLL</span>
+    <div class="w-px h-8 bg-text-primary"></div>
+  </div>
+</section>

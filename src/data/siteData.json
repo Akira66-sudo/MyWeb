@@ -1,83 +1,12 @@
 {
-    "identity": {
-        "name": "Zidan",
-        "role": "Web & Game Developer",
-        "introStart": "Enjoys Building Systems with Clean, Efficient, and",
-        "introHighlight": "Pythonic Code"
-    },
-    "systemNotes": [
-        {
-            "label": "OS",
-            "value": "Windows 11 & ArchLinux"
-        },
-        {
-            "label": "Starship",
-            "value": "On (ZSH)"
-        },
-        {
-            "label": "Editor",
-            "value": "VS Code"
-        },
-        {
-            "label": "Workflow",
-            "value": "Trunk Based"
-        }
-    ],
-    "principles": {
-        "approach": {
-            "label": "Approach",
-            "value": "Explicit > Implicit"
-        },
-        "focus": {
-            "label": "Focus",
-            "value": "Maintainability"
-        },
-        "description": "Code should be readable. Whether it’s complex backend logic or intricate game mechanics, clarity and simplicity always come first."
-    },
-    "languages": [
-        {
-            "name": "Python",
-            "status": "General Purpose",
-            "isPrimary": true
-        },
-        {
-            "name": "JavaScript",
-            "status": "Fullstack",
-            "isPrimary": false
-        },
-        {
-            "name": "C++",
-            "status": "Game Systems",
-            "isPrimary": false
-        },
-        {
-            "name": "PHP",
-            "status": "Backend",
-            "isPrimary": false
-        }
-    ],
-    "webStack": [
-        "HTML & CSS",
-        "Tailwind",
-        "Bootstrap",
-        "Astro",
-        "Laravel",
-        "Django"
-    ],
-    "dataStack": [
-        "MySQL",
-        "PostgreSQL",
-        "SQLite",
-        "Supabase",
-        "Firebase"
-    ],
-    "tools": [
-        "Git",
-        "VS Code",
-        "Linux"
-    ],
-    "gameDev": [
-        "Godot",
-        "Unity"
-    ]
+  "identity": {
+    "name": "Muhammad Raid Zaidani",
+    "status": "AVAILABLE FOR FREELANCE & FULL-TIME POSITIONS",
+    "email": "m.raid.zaidani@gmail.com",
+    "hero_subtitle": "Building useful web applications with clean architecture, thoughtful user experience, and scalable backend systems. Passionate about turning ideas into software that people actually use.",
+    "about_title": "Behind the Code",
+    "about_description": "Specialized in engineering full-scale digital solutions, from modern web applications to interactive games using performance-driven architectures. A Fullstack Developer from Lombok, Indonesia, committed to professional-grade programming.",
+    "footer_bio": "Fullstack Developer & Game Creator engineering web solutions, Python systems, and interactive experiences with precision.",
+    "resume_url": "https://raw.githubusercontent.com/zidan-idz/zidan-idz/main/CV%20-%20Muhammad%20Raid%20Zaidani.pdf"
+  }
 }

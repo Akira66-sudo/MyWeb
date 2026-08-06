@@ -1,0 +1,58 @@
+---
+import { getSiteData, getSocialLinks } from "../lib/dataFetcher";
+const { identity } = await getSiteData();
+const socialLinks = await getSocialLinks();
+const telegramLink = socialLinks.find(link => (link.platform_name || '').toLowerCase() === 'telegram');
+---
+
+<section class="relative bg-[#F5F4F0] text-[#1C1C1A] pt-24 pb-20 border-t border-[#1C1C1A]/10">
+  <div class="max-w-[1400px] mx-auto relative z-10 px-4 md:px-12">
+    
+    <!-- Seamless Top CTA Header -->
+    <div class="flex flex-col gap-10">
+      
+      <!-- Status Pulse -->
+      <div class="anim-fade-up flex items-center gap-3">
+        <span class="relative flex h-3 w-3">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#02B6E6] opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-[#02B6E6]"></span>
+        </span>
+        <span class="mono text-[9px] md:text-xs uppercase tracking-widest text-[#1C1C1A]/60 font-bold">
+          {identity.status || "AVAILABLE FOR FREELANCE & FULL-TIME POSITIONS"}
+        </span>
+      </div>
+
+      <!-- Giant Headline -->
+      <div class="anim-fade-up delay-100 flex flex-col gap-2 md:gap-4">
+        <h2 class="serif text-4xl sm:text-6xl md:text-8xl lg:text-[7rem] font-black tracking-tight leading-[0.9]">
+          Have an idea?<br/>
+          Let's build something<br/>
+          <span class="italic text-[#1C1C1A]/60">extraordinary.</span>
+        </h2>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="anim-fade-up delay-200 flex flex-col sm:flex-row items-center justify-start sm:justify-center lg:justify-start gap-3 sm:gap-6 pt-4">
+        <a 
+          href={`mailto:${identity.email}`} 
+          class="w-full sm:w-auto justify-center mono text-[9px] md:text-xs font-bold uppercase tracking-[0.2em] px-6 py-4 md:px-8 md:py-5 bg-[#1C1C1A] text-[#F5F4F0] hover:bg-[#1C1C1A]/80 hover:scale-105 active:scale-95 transition-all duration-300 rounded-full shadow-xl flex items-center gap-3 group/btn"
+        >
+          <span>START A CONVERSATION</span>
+          <i class="ri-arrow-right-up-line text-sm md:text-lg group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform"></i>
+        </a>
+
+        {telegramLink && (
+          <a 
+            href={telegramLink.url} 
+            target="_blank" 
+            class="w-full sm:w-auto justify-center mono text-[9px] md:text-xs font-bold uppercase tracking-[0.2em] px-6 py-4 md:px-8 md:py-5 border border-[#1C1C1A]/20 text-[#1C1C1A]/60 hover:text-[#1C1C1A] hover:border-[#1C1C1A] transition-all rounded-full flex items-center gap-3"
+          >
+            <i class={`${telegramLink.icon_class || 'ri-telegram-line'} text-sm md:text-base`}></i>
+            <span>TELEGRAM DIRECT</span>
+          </a>
+        )}
+      </div>
+
+    </div>
+  </div>
+</section>

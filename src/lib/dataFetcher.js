@@ -1,68 +1,69 @@
-import { DEV_CONFIG } from "../config/dev.config";
-import siteDataLocal from "../data/siteData.json";
-import projectsLocal from "../data/projects.json";
+import siteData from "../data/siteData.json";
+import projectsData from "../data/projects.json";
+import skillsData from "../data/skills.json";
+import workPhasesData from "../data/workPhases.json";
+import socialsData from "../data/socials.json";
 
-// URL Sumber Data (GitHub)
-const REMOTE_URLS = {
-    siteData: "https://raw.githubusercontent.com/zidan-idz/TM-Resources/refs/heads/main/My/siteData.json",
-    projects: "https://raw.githubusercontent.com/zidan-idz/TM-Resources/refs/heads/main/My/projects.json"
-};
-
-// Logger helper
-function log(message) {
-    if (DEV_CONFIG.DEBUG_LOG) {
-        console.log(message);
-    }
+// ----------------------------------------------------
+// FUNGSI LEGACY (Diubah untuk membaca JSON lokal SSG)
+// ----------------------------------------------------
+export async function getSiteTexts() {
+    return siteData; // Mengembalikan seluruh struktur siteData
 }
 
-/**
- * Ambil data dari GitHub. Jika gagal, pakai data lokal.
- * Di mode development, bisa skip fetch online.
- * @param {string} type - 'siteData' atau 'projects'
- * @param {object} localFallback - Data cadangan lokal
- */
-async function fetchWithFallback(type, localFallback) {
-    // DEV MODE: Skip online, langsung pakai lokal
-    if (DEV_CONFIG.USE_LOCAL_DATA) {
-        log(`[DEV] Pakai data lokal: ${type}`);
-        return localFallback;
-    }
-
-    // PROD MODE: Fetch online dengan fallback
-    try {
-        const url = REMOTE_URLS[type];
-        if (!url) throw new Error(`URL tak ditemukan: ${type}`);
-
-        // Batas waktu fetch 3 detik
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000);
-
-        const response = await fetch(url, { 
-            signal: controller.signal,
-            cache: 'no-store' // Force fresh fetch, bypass Vercel cache
-        });
-        clearTimeout(timeoutId);
-
-        if (!response.ok) {
-            throw new Error(`Gagal fetch ${type}: ${response.status} ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        log(`[PROD] Data dari online: ${type}`);
-        return data;
-    } catch (error) {
-        // Gagal fetch, pakai lokal sebagai fallback
-        log(`[FALLBACK] Pakai lokal '${type}'. Error: ${error.message}`);
-        return localFallback;
-    }
-}
-
-// Helper ringkas
 export async function getSiteData() {
-    return await fetchWithFallback('siteData', siteDataLocal);
+    // Memetakan struktur baru ke struktur lama yang diekspektasikan komponen
+    return {
+        identity: {
+            name: siteData.identity?.name || "Muhammad Raid Zaidani",
+            nickname: siteData.identity?.nickname || "zidan-idz",
+            role: siteData.identity?.role || "FULLSTACK DEVELOPER",
+            location: siteData.identity?.location || "Lombok, Indonesia",
+            status: siteData.identity?.status || "AVAILABLE FOR FREELANCE & FULL-TIME POSITIONS",
+            bio: siteData.identity?.about_description || "", 
+            about_title: siteData.identity?.about_title || "Behind the Code",
+            hero_headline: siteData.identity?.name || "Muhammad Raid Zaidani.",
+            hero_bio: siteData.identity?.hero_subtitle || "", 
+            tech_description: siteData.identity?.tech_description || "A high-performance architecture built with the best tools in the industry.", 
+            email: siteData.identity?.email || "contact@example.com",
+            resume_url: siteData.identity?.resume_url || "#",
+            footer_bio: siteData.identity?.footer_bio || ""
+        },
+        stats: {
+            stat_1_label: "Years of Coding",
+            stat_1_value: "3",
+            stat_2_label: "Tech Stacks Mastered",
+            stat_2_value: "10",
+            stat_3_label: "Projects Developed",
+            stat_3_value: "20",
+            stat_4_label: "Infinite Curiosity",
+            stat_4_value: "1"
+        }
+    };
+}
+
+export async function getWorkPhases() {
+    return workPhasesData;
+}
+
+export async function getTechStacks() {
+    return skillsData;
+}
+
+export async function getSocialLinks() {
+    return socialsData;
 }
 
 export async function getProjects() {
-    return await fetchWithFallback('projects', projectsLocal);
+    return projectsData.map(p => ({
+        id: p.id,
+        title: p.title,
+        category: p.category,
+        description: p.description,
+        techStack: p.tags || p.techStack || [],
+        link: p.github_url || p.repo_url,
+        demo: p.demo_url || p.demo,
+        image: p.image_url || p.image,
+        isFeatured: p.is_featured || false
+    }));
 }
-

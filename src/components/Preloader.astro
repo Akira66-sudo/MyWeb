@@ -1,0 +1,97 @@
+---
+// Preloader.astro
+---
+
+<div id="global-preloader" class="fixed inset-0 z-[10000] bg-bg-base flex flex-col items-center justify-center transition-transform duration-1000 ease-[cubic-bezier(0.76,0,0.24,1)] origin-top">
+  
+  <div class="absolute inset-0 z-0 bg-noise opacity-10"></div>
+  <div class="absolute left-1/2 top-0 bottom-0 w-px bg-border-strong opacity-20 pointer-events-none z-0"></div>
+
+  <div class="relative z-10 flex flex-col items-center gap-6">
+    <div class="overflow-hidden flex items-center justify-center">
+      <div id="preloader-text" class="text-6xl md:text-8xl font-serif font-black text-text-primary tracking-tighter opacity-0 translate-y-10 transition-all duration-700 ease-out">
+        0%
+      </div>
+    </div>
+    
+    <div class="flex items-center gap-4 opacity-0 translate-y-4 transition-all duration-700 ease-out delay-200" id="preloader-meta">
+      <div class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#02B6E6] opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#02B6E6]"></span>
+      </div>
+      <div class="mono text-[10px] uppercase tracking-[0.3em] font-bold text-text-secondary">
+        SYSTEM_BOOT
+      </div>
+    </div>
+    
+    <div class="w-48 h-px bg-border-strong relative overflow-hidden mt-4 opacity-0 transition-opacity duration-700 delay-300" id="preloader-bar-bg">
+      <div id="preloader-bar" class="absolute top-0 left-0 h-full w-0 bg-python-blue transition-all duration-200 ease-out"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const preloader = document.getElementById("global-preloader");
+    const preloaderText = document.getElementById("preloader-text");
+    const preloaderMeta = document.getElementById("preloader-meta");
+    const preloaderBar = document.getElementById("preloader-bar");
+    const preloaderBarBg = document.getElementById("preloader-bar-bg");
+
+    if (!preloader || !preloaderText || !preloaderBar) return;
+
+    // Lock scroll
+    document.body.style.overflow = 'hidden';
+
+    // Reveal elements
+    setTimeout(() => {
+      preloaderText.classList.remove("opacity-0", "translate-y-10");
+      if (preloaderMeta) preloaderMeta.classList.remove("opacity-0", "translate-y-4");
+      if (preloaderBarBg) preloaderBarBg.classList.remove("opacity-0");
+    }, 100);
+
+    let progress = 0;
+    
+    // Simulate loading
+    const interval = setInterval(() => {
+      // Add random progress chunks to look like real loading
+      progress += Math.floor(Math.random() * 15) + 1;
+      
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        
+        preloaderText.innerText = "100%";
+        preloaderBar.style.width = "100%";
+        
+        if (preloaderMeta) {
+          preloaderMeta.innerHTML = `
+            <div class="relative flex h-2 w-2">
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            </div>
+            <div class="mono text-[10px] uppercase tracking-[0.3em] font-bold text-text-secondary">
+              SYSTEM_READY
+            </div>
+          `;
+        }
+        
+        // Hide preloader
+        setTimeout(() => {
+          preloader.style.transform = "translateY(-100%)";
+          document.body.style.overflow = ''; // Unlock scroll
+          
+          // Remove from DOM after transition
+          setTimeout(() => {
+            preloader.remove();
+          }, 1000);
+          
+        }, 600);
+        
+      } else {
+        preloaderText.innerText = `${progress}%`;
+        preloaderBar.style.width = `${progress}%`;
+      }
+    }, 80);
+  });
+</script>

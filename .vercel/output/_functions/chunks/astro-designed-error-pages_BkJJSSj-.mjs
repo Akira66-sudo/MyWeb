@@ -1,18 +1,12 @@
-import { ak as NOOP_MIDDLEWARE_HEADER, al as REDIRECT_STATUS_CODES, A as AstroError, am as ActionsReturnedInvalidDataError, T as DEFAULT_404_COMPONENT } from './astro/server_Do5cnpjy.mjs';
 import { parse, stringify } from 'devalue';
+import { al as REDIRECT_STATUS_CODES, A as AstroError, am as ActionsReturnedInvalidDataError, D as DEFAULT_404_COMPONENT } from './astro/server_CFwk7vK6.mjs';
 import { escape } from 'html-escaper';
-
-const NOOP_MIDDLEWARE_FN = async (_ctx, next) => {
-  const response = await next();
-  response.headers.set(NOOP_MIDDLEWARE_HEADER, "true");
-  return response;
-};
 
 const ACTION_QUERY_PARAMS$1 = {
   actionName: "_action"};
 const ACTION_RPC_ROUTE_PATTERN = "/_actions/[...path]";
 
-const __vite_import_meta_env__ = {"ASSETS_PREFIX": undefined, "BASE_URL": "/", "DEV": false, "MODE": "production", "PROD": true, "PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsamduZWFta3pxcHRueHNvaW11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc1NTMwNDcsImV4cCI6MjA4MzEyOTA0N30.1sZWyZ2uLOIHD-w3P5_cr3tGLpSmt2BNRLXwzXBcaeU", "PUBLIC_SUPABASE_URL": "https://vljgneamkzqptnxsoimu.supabase.co", "SITE": "https://zidan-idz.my.id", "SSR": true};
+const __vite_import_meta_env__ = {"ASSETS_PREFIX": undefined, "BASE_URL": "/", "DEV": false, "MODE": "production", "PROD": true, "PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_vLSNWb-12yQVsXQRjoLtfg_dDCqQXM1", "PUBLIC_SUPABASE_URL": "https://emkdrleoagjxyhpyhflt.supabase.co", "SITE": "https://zidan-idz.my.id", "SSR": true};
 const ACTION_QUERY_PARAMS = ACTION_QUERY_PARAMS$1;
 const codeToStatusMap = {
   // Implemented from IANA HTTP Status Code Registry
@@ -361,4 +355,4 @@ const default404Instance = {
   default: default404Page
 };
 
-export { ActionError as A, DEFAULT_404_ROUTE as D, NOOP_MIDDLEWARE_FN as N, ACTION_RPC_ROUTE_PATTERN as a, ACTION_QUERY_PARAMS as b, default404Instance as c, deserializeActionResult as d, ensure404Route as e, getActionQueryString as g, serializeActionResult as s };
+export { ActionError as A, DEFAULT_404_ROUTE as D, deserializeActionResult as a, ACTION_RPC_ROUTE_PATTERN as b, ACTION_QUERY_PARAMS as c, default404Instance as d, ensure404Route as e, getActionQueryString as g, serializeActionResult as s };
