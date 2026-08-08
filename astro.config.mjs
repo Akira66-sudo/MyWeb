@@ -11,7 +11,7 @@ export default defineConfig({
   // URL dasar situs (digunakan untuk sitemap dan canonical URLs)
   site: 'https://zidan-idz.my.id',
   
-  // Output mode (static disarankan untuk Netlify Serverless Functions dengan Astro 5+)
+  // Output mode (static = default Astro 5, hybrid sudah digabung ke static)
   output: 'static',
   
   // Adapter Netlify untuk deployment

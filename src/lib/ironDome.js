@@ -1,8 +1,8 @@
 /**
  * ironDome.js
- * Sistem Filter Anti-Toxic & SARA Lanjutan (Iron Dome)
- * Menggunakan pencocokan pola matriks (Matrix Pattern Matching) dan
- * normalisasi Leetspeak (penggantian huruf dengan angka/simbol).
+ * Sistem Filter Anti-Toxic & SARA Lanjutan (Iron Dome) - v2.0
+ * Menggunakan pencocokan substring penuh (bukan word boundary)
+ * agar tidak bisa dijebol dengan teknik penggabungan kata atau simbol.
  */
 
 const badWords = [
@@ -54,12 +54,22 @@ const badWords = [
   "iblis"
 ];
 
-const safeNames = [
+/**
+ * Daftar kata aman (Whitelist) yang mengandung potongan kata yang
+ * mirip kata kasar tetapi merupakan nama atau kata normal.
+ * Sebelum pemindaian, setiap kata dalam daftar ini akan DIHAPUS
+ * dari teks input agar tidak terjadi False Positive.
+ */
+const safeSubstrings = [
   "basuki",
   "panji",
   "tanjung",
   "sanjaya",
   "dickson",
+  "dicky",
+  "ricky",
+  "micky",
+  "gay",       // gayatri, etc.
   "gayatri",
   "titus",
   "tito",
@@ -69,15 +79,33 @@ const safeNames = [
   "anjani",
   "anjas",
   "anjasmara",
+  "anjar",
+  "anjur",     // menganjurkan, dll
   "mamak",
   "mamik",
   "mumuk",
   "jembatan",
+  "jembatani",
   "kantil",
   "banjir",
-  "sanjay"
+  "sanjay",
+  "masuk",
+  "pasukan",
+  "aswin",
+  "aswad",
+  "aswar",
+  "teteh",
+  "kasur",
+  "assalamualaikum",
+  "assassin",
+  "classic",
+  "assistant"
 ];
 
+/**
+ * Peta penggantian karakter Leetspeak ke pola regex.
+ * Kunci: huruf asli. Nilai: kelas karakter regex yang cocok.
+ */
 const charMap = {
   a: "[aA4@*^]",
   b: "[bB8]",
@@ -93,12 +121,11 @@ const charMap = {
 };
 
 /**
- * Membangun Regular Expression (RegEx) yang kuat untuk satu kata kasar.
- * Fungsi ini akan mengubah kata (misal: "babi") menjadi pola yang bisa
- * menangkap variasi seperti "b@b1", "b a b i", "b-a-b-i", dll.
+ * Membangun Regular Expression (RegEx) TANPA word boundary (\b)
+ * agar kata kasar terdeteksi di mana saja (awal, tengah, akhir kata gabungan).
  *
  * @param {string} word - Kata dasar yang ingin dicegah.
- * @returns {RegExp} Objek regex yang sudah dirakit.
+ * @returns {RegExp} Objek regex substring yang sudah dirakit.
  */
 function buildRegex(word) {
   let pattern = "";
@@ -111,14 +138,19 @@ function buildRegex(word) {
     }
     pattern += token;
   }
-  return new RegExp(`\\b${pattern}\\b`, "i");
+  // Gunakan substring match (TANPA \b) agar tidak bisa dibypass dengan penggabungan kata
+  return new RegExp(pattern, "i");
 }
 
 // Pra-kompilasi semua regex agar pengecekan lebih cepat saat fungsi dipanggil
-const badWordRegexes = badWords.map((bw) => buildRegex(bw));
+const badWordRegexes = badWords.map((bw) => ({ word: bw, regex: buildRegex(bw) }));
+
+// Pra-kompilasi regex untuk whitelist (kata aman) — untuk dihapus sebelum scan
+const safeSubstringRegexes = safeSubstrings.map((s) => new RegExp(s, "gi"));
 
 /**
  * Mengevaluasi apakah suatu teks mengandung kata kasar/toxic.
+ * Menggunakan strategi "hapus kata aman dulu, baru pindai".
  *
  * @param {string} text - Teks input dari pengguna yang akan dievaluasi.
  * @returns {boolean} True jika teks toxic, False jika teks bersih/aman.
@@ -126,22 +158,26 @@ const badWordRegexes = badWords.map((bw) => buildRegex(bw));
 export function isToxic(text) {
   if (!text) return false;
 
-  // 1. Pengecekan Daftar Putih (Whitelist Check)
-  // Memastikan nama-nama normal (seperti Basuki) tidak terblokir salah sasaran
-  const normalizedText = text.trim().toLowerCase();
-  if (safeNames.includes(normalizedText)) {
-    return false;
-  }
+  // Langkah 1: Normalisasi input (lowercase, trim)
+  let normalized = text.trim().toLowerCase();
 
-  // 2. Pencocokan Pola Matriks (Matrix Pattern Match)
-  // Memeriksa dengan kombinasi huruf/leetspeak yang sudah dipra-kompilasi
-  for (const rx of badWordRegexes) {
-    if (rx.test(normalizedText)) {
+  // Langkah 2: Hapus semua kata aman dari input sebelum pemindaian.
+  // Ini mencegah False Positive pada nama seperti "Basuki", "Dicky", "Anjani".
+  // Contoh: "Basuki123Babi" -> hapus "basuki" -> "123Babi" -> terdeteksi "babi"!
+  for (const safeRgx of safeSubstringRegexes) {
+    normalized = normalized.replace(safeRgx, " ");
+  }
+  normalized = normalized.trim();
+
+  // Langkah 3: Pemindaian Substring Penuh (Matrix Pattern Match)
+  // Memeriksa dengan kombinasi huruf/leetspeak tanpa batasan word boundary
+  for (const { regex } of badWordRegexes) {
+    if (regex.test(normalized)) {
       return true;
     }
   }
 
-  // 3. Fallback (Pencocokan Tanda Tangan Konsonan)
+  // Langkah 4: Fallback — Pencocokan Tanda Tangan Konsonan
   // Berguna untuk kata kasar yang sangat disingkat (misal: "KNTL" tanpa huruf vokal)
   const badSignatures = [
     "ngntt",
@@ -163,7 +199,7 @@ export function isToxic(text) {
   ];
 
   // Menghapus semua huruf vokal, angka, dan karakter spesial
-  let noVowels = normalizedText.replace(/[aeiou0-9\W_]/g, "");
+  let noVowels = normalized.replace(/[aeiou0-9\W_]/g, "");
   // Menyusutkan konsonan berulang (misal: "knttlll" menjadi "kntl")
   let signature = noVowels.replace(/(.)\1+/g, "$1");
 
