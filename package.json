@@ -11,8 +11,8 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@astrojs/netlify": "^5.5.3",
     "@astrojs/sitemap": "^3.6.1",
-    "@astrojs/vercel": "^9.0.2",
     "@supabase/supabase-js": "^2.112.1",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.16.6",

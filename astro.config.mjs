@@ -1,8 +1,8 @@
 // @ts-check
 // astro.config.mjs
-// File konfigurasi utama untuk Astro, mengatur build, adapter (Vercel), integrasi (Tailwind, Sitemap), dan optimasi gambar.
+// File konfigurasi utama untuk Astro, mengatur build, adapter (Netlify), integrasi (Tailwind, Sitemap), dan optimasi gambar.
 import { defineConfig } from 'astro/config';
-import vercel from '@astrojs/vercel';
+import netlify from '@astrojs/netlify';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
@@ -11,15 +11,11 @@ export default defineConfig({
   // URL dasar situs (digunakan untuk sitemap dan canonical URLs)
   site: 'https://zidan-idz.my.id',
   
-  // Output mode (static untuk performa tercepat, tidak butuh server aktif)
+  // Output mode (static disarankan untuk Netlify Serverless Functions dengan Astro 5+)
   output: 'static',
   
-  // Adapter Vercel untuk deployment
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true, // Mengaktifkan Vercel Web Analytics
-    },
-  }),
+  // Adapter Netlify untuk deployment
+  adapter: netlify(),
   
   image: {
     // Domain gambar eksternal yang diizinkan untuk dioptimasi oleh komponen <Image /> Astro
