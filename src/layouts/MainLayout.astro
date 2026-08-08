@@ -26,6 +26,25 @@ const showMaintenance = isMaintenance && !isBypass;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Muhammad Raid Zaidani (zidan-idz) - Fullstack Developer & Game Creator from Lombok, Indonesia. Discover my portfolio of modern web applications, CLI tools, and Godot games." />
+    <meta name="keywords" content="Muhammad Raid Zaidani, zidan-idz, Fullstack Developer, Web Developer, Lombok, Indonesia, Portfolio, Web Application, React, Astro, Django, Python" />
+    <meta name="author" content="Muhammad Raid Zaidani" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://zidan-idz.my.id/" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content="Portfolio of Muhammad Raid Zaidani (zidan-idz) - Fullstack Developer & Game Creator." />
+    <meta property="og:image" content="https://zidan-idz.my.id/images/profile.jpg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://zidan-idz.my.id/" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content="Portfolio of Muhammad Raid Zaidani (zidan-idz) - Fullstack Developer & Game Creator." />
+    <meta property="twitter:image" content="https://zidan-idz.my.id/images/profile.jpg" />
 
     <!-- Dark Mode Init Script & Bypasses (Prevents FOUC) -->
     <script is:inline>
