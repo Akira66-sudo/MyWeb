@@ -281,8 +281,11 @@ const showLab = Astro.url.searchParams.get("feature") === "lab";
     }
 
     // ── Buka / Tutup Menu ──────────────────────────────────────────
+    let lastOpenTime = 0;
+
     function openMenu() {
       isOpen = true;
+      lastOpenTime = Date.now();
       toggleBtn.classList.add("ring-2", "ring-white/60");
 
       if (window.innerWidth < 768) {
@@ -301,6 +304,7 @@ const showLab = Astro.url.searchParams.get("feature") === "lab";
     }
 
     function closeMenu() {
+      if (Date.now() - lastOpenTime < 300) return; // Mencegah ghost-click langsung menutup menu di mobile
       isOpen = false;
       toggleBtn.classList.remove("ring-2", "ring-white/60");
       logoImg.style.transform = "";

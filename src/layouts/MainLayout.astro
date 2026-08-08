@@ -63,8 +63,14 @@ const showMaintenance = isMaintenance && !isBypass;
         console.log(`⚡ [GOD MODE] Theme forced to: ${forceTheme}`);
       }
 
-      const theme = localStorage.getItem("theme");
-      if (theme === "dark" || (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+      const theme = (() => {
+        if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+          return localStorage.getItem("theme");
+        }
+        return "light";
+      })();
+
+      if (theme === "dark") {
         document.documentElement.classList.add("dark");
       }
     </script>
