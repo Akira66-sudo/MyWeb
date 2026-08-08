@@ -1,15 +1,18 @@
 ---
+// index.astro
+// Halaman Utama (Homepage) situs portofolio.
+// Merender semua bagian (sections) dalam urutan yang tepat di dalam MainLayout.
 export const prerender = true;
 
 import MainLayout from "../layouts/MainLayout.astro";
-import Hero from "../components/Hero.astro";
-import Stats from "../components/Stats.astro";
-import About from "../components/About.astro";
-import TechStack from "../components/TechStack.astro";
-import Projects from "../components/Projects.astro";
-import CtaBanner from "../components/CtaBanner.astro";
-import MiniGames from "../components/MiniGames.astro";
-import Contact from "../components/Contact.astro";
+import Hero from "../components/sections/Hero.astro";
+import Stats from "../components/ui/Stats.astro";
+import About from "../components/sections/About.astro";
+import TechStack from "../components/sections/TechStack.astro";
+import Projects from "../components/sections/Projects.astro";
+import CtaBanner from "../components/sections/CtaBanner.astro";
+import MiniGames from "../components/sections/MiniGames.astro";
+import Contact from "../components/sections/Contact.astro";
 ---
 
 <MainLayout>

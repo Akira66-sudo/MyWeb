@@ -20,20 +20,29 @@
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/game-stats/?$",
+			"src": "^/api/contact/?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/leaderboard/?$",
+			"src": "^/api/keepalive/?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^/api/ping/?$",
+			"src": "^/api/score/?$",
 			"dest": "_render"
 		},
 		{
 			"src": "^/api/stats/?$",
 			"dest": "_render"
+		},
+		{
+			"src": "^/api/wakeup/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/.*$",
+			"dest": "/404.html",
+			"status": 404
 		}
 	]
 }

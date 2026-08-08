@@ -1,20 +1,36 @@
-// Development Configuration
+/**
+ * dev.config.js
+ * Pusat konfigurasi global untuk mempermudah proses pengembangan (Development).
+ * Mengontrol apakah aplikasi harus menggunakan data lokal, mengabaikan Supabase,
+ * atau menampilkan log debugging.
+ */
+
 export const DEV_CONFIG = {
-    // Data Fetching Mode (siteData & projects)
-    // true  = Skip online, langsung pakai data lokal
-    // false = Coba online dulu, fallback ke lokal jika gagal
-    USE_LOCAL_DATA: true,
+  /**
+   * Mode Pengambilan Data (siteData & projects)
+   * true  = Abaikan koneksi online, langsung pakai file JSON lokal
+   * false = Coba online dulu, fallback ke lokal jika gagal (saat ini tidak dipakai karena struktur SSG)
+   */
+  USE_LOCAL_DATA: true,
 
-    // Stats/Supabase Mode
-    // true  = Skip Supabase, langsung pakai stats.json lokal
-    // false = Pakai Supabase (fallback ke lokal jika gagal)
-    USE_LOCAL_STATS: false,
+  /**
+   * Mode Supabase (Statistik & Minigames)
+   * true  = Abaikan Supabase, gunakan variabel memori lokal (views & likes tidak tersimpan permanen)
+   * false = Hubungkan ke Supabase (akan fallback ke lokal otomatis jika koneksi gagal)
+   */
+  USE_LOCAL_STATS: false,
 
-    // Loader Mode
-    // true  = Selalu tampilkan loader (abaikan cooldown)
-    // false = Tampilkan sesuai cooldown (10 menit)
-    LOADER_ALWAYS_SHOW: false,
+  /**
+   * Mode Animasi Pemuat (Loader)
+   * true  = Selalu tampilkan animasi loading (mengabaikan cooldown)
+   * false = Tampilkan animasi sesuai cooldown (default: 10 menit per kunjungan)
+   */
+  LOADER_ALWAYS_SHOW: false,
 
-    // Enable debug logging ke console
-    DEBUG_LOG: false
+  /**
+   * Mode Log Debugging
+   * true  = Cetak semua proses (seperti pemanggilan API dan status DB) ke console browser
+   * false = Sembunyikan log agar konsol bersih di production
+   */
+  DEBUG_LOG: false
 };

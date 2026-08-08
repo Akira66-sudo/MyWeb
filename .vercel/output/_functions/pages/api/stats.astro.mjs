@@ -21,7 +21,7 @@ const getStats = async () => {
   try {
     const { data, error } = await supabase.from("page_stats").select("views, likes").eq("slug", "home").single();
     if (error) throw error;
-    log("[PROD] Stats dari Supabase");
+    log("[PROD] Stats dari Supabase berhasil ditarik");
     return data;
   } catch (e) {
     log(`[FALLBACK] Gagal ambil stats: ${e.message}. Pakai data lokal.`);
@@ -53,40 +53,53 @@ const incrementLikes = async () => {
   }
 };
 
-const prerender = false; // Wajib server-side
+/**
+ * Rute API: /api/stats
+ * Mengelola sistem analitik sederhana (Page Views & Likes).
+ */
 
+const prerender = false; // Wajib server-side (Tidak di-build statis)
+
+/**
+ * Endpoint GET: Digunakan saat halaman pertama kali dimuat
+ * untuk mengambil total views dan likes saat ini.
+ */
 async function GET() {
-    try {
-        const stats = await getStats();
-        return new Response(JSON.stringify(stats), {
-            status: 200,
-            headers: { "Content-Type": "application/json" }
-        });
-    } catch (error) {
-        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
-    }
+  try {
+    const stats = await getStats();
+    return new Response(JSON.stringify(stats), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+  }
 }
 
+/**
+ * Endpoint POST: Digunakan saat ada event (halaman dibuka atau tombol like diklik)
+ * Menerima payload JSON: { type: "view" } atau { type: "like" }
+ */
 async function POST({ request }) {
-    try {
-        const body = await request.json();
-        let stats;
+  try {
+    const body = await request.json();
+    let stats;
 
-        if (body.type === 'view') {
-            stats = await incrementViews();
-        } else if (body.type === 'like') {
-            stats = await incrementLikes();
-        } else {
-            stats = await getStats();
-        }
-
-        return new Response(JSON.stringify(stats), {
-            status: 200,
-            headers: { "Content-Type": "application/json" }
-        });
-    } catch (error) {
-        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+    if (body.type === "view") {
+      stats = await incrementViews();
+    } else if (body.type === "like") {
+      stats = await incrementLikes();
+    } else {
+      stats = await getStats();
     }
+
+    return new Response(JSON.stringify(stats), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+  }
 }
 
 const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({

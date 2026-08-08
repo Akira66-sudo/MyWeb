@@ -1,9 +1,23 @@
 ---
+// MainLayout.astro
+// Root Layout component wrapping all pages.
+// Handles global components like Preloader, CustomCursor, FloatingBar,
+// fonts, meta tags, scroll animations (Lenis/ScrollReveal), and Konami Code Easter Egg.
 import "../styles/global.css";
-import FloatingBar from "../components/FloatingBar.astro";
-import CustomCursor from "../components/CustomCursor.astro";
-import Preloader from "../components/Preloader.astro";
-const { title = "Muhammad Raid Zaidani (zidan-idz) — Fullstack Developer & Game Creator" } = Astro.props;
+import FloatingBar from "../components/ui/FloatingBar.astro";
+import CustomCursor from "../components/ui/CustomCursor.astro";
+import Preloader from "../components/ui/Preloader.astro";
+
+// Accept 'title' prop for page title, and 'hideUI' to hide FloatingBar on specific pages (like 404)
+const {
+  title = "Muhammad Raid Zaidani (zidan-idz) — Fullstack Developer & Game Creator",
+  hideUI = false
+} = Astro.props;
+
+// --- GOD MODE: MAINTENANCE SWITCH ---
+const isMaintenance = import.meta.env.MAINTENANCE_MODE === "true";
+const isBypass = Astro.url.searchParams.get("admin_key") === "zeyshyy";
+const showMaintenance = isMaintenance && !isBypass;
 ---
 
 <!doctype html>
@@ -12,34 +26,74 @@ const { title = "Muhammad Raid Zaidani (zidan-idz) — Fullstack Developer & Gam
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
-    
-    <meta name="description" content="Muhammad Raid Zaidani (zidan-idz) — Fullstack Developer & Game Creator from Lombok, Indonesia specializing in Web Applications, Python Backends, and Godot 2D Games." />
-    <meta name="keywords" content="Muhammad Raid Zaidani, zidan-idz, Fullstack Developer, Game Developer, Python, Django, Astro, Lombok, Indonesia" />
+
+    <!-- Dark Mode Init Script & Bypasses (Prevents FOUC) -->
+    <script is:inline>
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      // --- GOD MODE: GHOST MODE ---
+      if (urlParams.get("ghost_mode") === "true") {
+        localStorage.setItem("ghost_mode", "true");
+        console.log("👻 [GOD MODE] Analytics Ghost Mode Activated.");
+      }
+
+      // --- GOD MODE: FORCE THEME ---
+      const forceTheme = urlParams.get("force_theme");
+      if (forceTheme === "dark" || forceTheme === "light") {
+        localStorage.setItem("theme", forceTheme);
+        console.log(`⚡ [GOD MODE] Theme forced to: ${forceTheme}`);
+      }
+
+      const theme = localStorage.getItem("theme");
+      if (theme === "dark" || (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
+
+    <!-- Main Meta Tags (SEO & Metadata) -->
+    <meta
+      name="description"
+      content="Muhammad Raid Zaidani (zidan-idz) — Fullstack Developer & Game Creator from Lombok, Indonesia specializing in Web Applications, Python Backends, and Godot 2D Games."
+    />
+    <meta
+      name="keywords"
+      content="Muhammad Raid Zaidani, zidan-idz, Fullstack Developer, Game Developer, Python, Django, Astro, Lombok, Indonesia"
+    />
     <meta name="author" content="Muhammad Raid Zaidani (zidan-idz)" />
 
-    <!-- OpenGraph Meta Tags (WhatsApp, LinkedIn, Facebook Preview) -->
+    <!-- Meta Tag OpenGraph (Pratinjau di WhatsApp, LinkedIn, Facebook) -->
     <meta property="og:title" content="Muhammad Raid Zaidani (zidan-idz) — Fullstack Developer" />
-    <meta property="og:description" content="Personal portfolio of Muhammad Raid Zaidani. Specialized in engineering full-scale digital solutions, from modern web applications to interactive games." />
+    <meta
+      property="og:description"
+      content="Personal portfolio of Muhammad Raid Zaidani. Specialized in engineering full-scale digital solutions, from modern web applications to interactive games."
+    />
     <meta property="og:image" content="/images/profile.jpg" />
     <meta property="og:type" content="website" />
 
-    <!-- Twitter Card Meta Tags -->
+    <!-- Meta Tag Twitter Card (Pratinjau di Twitter/X) -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Muhammad Raid Zaidani (zidan-idz) — Fullstack Developer" />
-    <meta name="twitter:description" content="Personal portfolio of Muhammad Raid Zaidani. Specialized in engineering full-scale digital solutions, from modern web applications to interactive games." />
+    <meta
+      name="twitter:description"
+      content="Personal portfolio of Muhammad Raid Zaidani. Specialized in engineering full-scale digital solutions, from modern web applications to interactive games."
+    />
     <meta name="twitter:image" content="/images/profile.jpg" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/webp" href="/images/icon.webp" />
     <link rel="apple-touch-icon" href="/images/icon.webp" />
-    
-    <!-- Fonts -->
+
+    <!-- Font & Ikon dari CDN -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    
-    <!-- Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
 
     <!-- Structured Data JSON-LD -->
     <script type="application/ld+json">
@@ -57,48 +111,130 @@ const { title = "Muhammad Raid Zaidani (zidan-idz) — Fullstack Developer & Gam
           "addressLocality": "Lombok",
           "addressCountry": "Indonesia"
         },
-        "sameAs": [
-          "https://github.com/zidan-idz"
-        ]
+        "sameAs": ["https://github.com/zidan-idz"]
       }
     </script>
   </head>
 
   <body class="bg-bg-base text-text-primary antialiased overflow-x-hidden min-h-screen relative">
-    
     <Preloader />
     <CustomCursor />
-    
-    <!-- Global Noise Grain Texture -->
+
+    <!-- Tekstur Latar Belakang Garis Halus (Global Noise Grain Texture) -->
     <div class="fixed inset-0 z-[-1] bg-noise"></div>
-    
-    <!-- Center Guideline (Optional Blueprint Aesthetic) -->
-    <div class="fixed left-1/2 top-0 bottom-0 w-px bg-border-strong opacity-20 hidden 2xl:block pointer-events-none z-[-1]"></div>
-    
-    <slot />
-    
-    <FloatingBar />
+
+    <!-- Garis Tengah (Gaya Estetika Blueprint) -->
+    <div
+      class="fixed left-1/2 top-0 bottom-0 w-px bg-border-strong opacity-20 hidden 2xl:block pointer-events-none z-[-1]"
+    >
+    </div>
+
+    <!-- Slot di sini adalah tempat konten halaman disisipkan -->
+    {
+      showMaintenance ? (
+        <div class="fixed inset-0 z-[999999] flex flex-col items-center justify-center bg-bg-base/90 backdrop-blur-md overflow-hidden">
+          <h1 class="text-4xl md:text-6xl font-mono font-bold mb-4 tracking-tighter text-text-primary text-center">SYSTEM <br />UPGRADING</h1>
+          <p class="text-text-secondary font-mono tracking-widest uppercase text-sm md:text-base mt-4 text-center">Be Right Back.</p>
+          <div class="mt-8 w-16 h-px bg-border-strong" />
+
+          <!-- CSS Monorail Animation -->
+          <div class="absolute bottom-20 left-0 right-0 h-px bg-border-strong opacity-20" />
+          <div class="absolute bottom-20 left-0 w-max animate-train-pass pointer-events-none">
+            <div class="flex items-end gap-[2px] opacity-60">
+              <!-- Speed Lines (Wind/Whoosh effect) trailing behind (on the left) -->
+              <div class="absolute -left-20 top-2 w-16 h-[2px] bg-text-primary opacity-50 rounded-full"></div>
+              <div class="absolute -left-32 top-6 w-24 h-[2px] bg-text-primary opacity-30 rounded-full"></div>
+              <div class="absolute -left-12 bottom-1 w-10 h-[2px] bg-text-primary opacity-80 rounded-full"></div>
+
+              <!-- Passenger Car 2 (Tail) -->
+              <div class="w-40 h-8 border-2 border-text-primary rounded-sm flex items-center justify-center">
+                <!-- Long Window Strip -->
+                <div class="w-[90%] h-3 bg-text-primary rounded-sm flex items-center justify-evenly px-1">
+                  <div class="w-0.5 h-full bg-bg-base"></div>
+                  <div class="w-0.5 h-full bg-bg-base"></div>
+                  <div class="w-0.5 h-full bg-bg-base"></div>
+                  <div class="w-0.5 h-full bg-bg-base"></div>
+                </div>
+              </div>
+
+              <!-- Connector -->
+              <div class="w-2 h-4 border-y-2 border-text-primary"></div>
+
+              <!-- Passenger Car 1 -->
+              <div class="w-40 h-8 border-2 border-text-primary rounded-sm flex items-center justify-center">
+                <!-- Long Window Strip -->
+                <div class="w-[90%] h-3 bg-text-primary rounded-sm flex items-center justify-evenly px-1">
+                  <!-- Window dividers -->
+                  <div class="w-0.5 h-full bg-bg-base"></div>
+                  <div class="w-0.5 h-full bg-bg-base"></div>
+                  <div class="w-0.5 h-full bg-bg-base"></div>
+                  <div class="w-0.5 h-full bg-bg-base"></div>
+                </div>
+              </div>
+              
+              <!-- Connector -->
+              <div class="w-2 h-4 border-y-2 border-text-primary"></div>
+
+              <!-- Aerodynamic Front (Whoosh Head) -->
+              <div class="relative w-40 h-8 border-y-2 border-r-2 border-text-primary overflow-hidden" style="border-top-right-radius: 100% 100%; border-bottom-right-radius: 0.25rem;">
+                <!-- Passenger Windows continuing -->
+                <div class="absolute left-1 top-1/2 -translate-y-1/2 w-16 h-3 bg-text-primary rounded-sm flex items-center justify-evenly px-1">
+                  <div class="w-0.5 h-full bg-bg-base"></div>
+                  <div class="w-0.5 h-full bg-bg-base"></div>
+                  <div class="w-0.5 h-full bg-bg-base"></div>
+                </div>
+                <!-- Cockpit Windshield (Curved to match nose) -->
+                <div class="absolute right-6 top-1.5 w-10 h-2.5 bg-text-primary" style="border-top-right-radius: 100% 100%; border-bottom-left-radius: 4px; transform: skewX(-30deg);"></div>
+                <!-- Headlight Glow -->
+                <div class="absolute right-0 bottom-1 w-3 h-3 bg-white rounded-full blur-[2px] opacity-80 shadow-[0_0_10px_#fff]"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <slot />
+      )
+    }
+
+    {!hideUI && !showMaintenance && <FloatingBar />}
 
     <script>
-      import ScrollReveal from 'scrollreveal';
-      import Lenis from 'lenis';
+      import ScrollReveal from "scrollreveal";
+      import Lenis from "lenis";
 
       document.addEventListener("DOMContentLoaded", () => {
-        // Initialize Lenis Smooth Scroll
+        // Inisialisasi Lenis untuk efek scroll mulus (Smooth Scroll)
         const lenis = new Lenis({
           duration: 1.2,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
-          direction: 'vertical',
-          gestureDirection: 'vertical',
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          direction: "vertical",
+          gestureDirection: "vertical",
           smooth: true,
           mouseMultiplier: 1,
           smoothTouch: false,
           touchMultiplier: 2,
-          infinite: false,
-        })
-        
-        // Expose lenis globally for components like FloatingBar to control scroll lock
+          infinite: false
+        });
+
+        // Jadikan lenis variabel global agar bisa diakses komponen lain (seperti FloatingBar untuk mematikan scroll)
         window.lenis = lenis;
+
+        // Tangani navigasi link ke anchor id (menggunakan lenis.scrollTo)
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            const targetId = this.getAttribute("href");
+            if (targetId !== "#") {
+              const targetEl = document.querySelector(targetId);
+              if (targetEl) {
+                e.preventDefault();
+                lenis.scrollTo(targetEl, { offset: -50 });
+              }
+            } else {
+              e.preventDefault();
+              lenis.scrollTo(0);
+            }
+          });
+        });
 
         // Get scroll value
         // lenis.on('scroll', (e) => {
@@ -106,78 +242,82 @@ const { title = "Muhammad Raid Zaidani (zidan-idz) — Fullstack Developer & Gam
         // })
 
         function raf(time) {
-          lenis.raf(time)
-          requestAnimationFrame(raf)
+          lenis.raf(time);
+          requestAnimationFrame(raf);
         }
-        requestAnimationFrame(raf)
+        requestAnimationFrame(raf);
 
+        // Inisialisasi ScrollReveal untuk animasi kemunculan elemen (Fade-up dll.)
         const sr = ScrollReveal({
-          distance: '40px',
+          distance: "40px",
           duration: 800,
-          easing: 'cubic-bezier(0.16, 1, 0.3, 1)', // Snappy, Apple-like ease out
+          easing: "cubic-bezier(0.16, 1, 0.3, 1)",
           opacity: 0,
           scale: 1,
           mobile: true,
-          reset: false // Do not animate out (anti-lag and glitch)
+          reset: false // Jangan sembunyikan kembali setelah muncul (mencegah glitch/lag)
         });
 
-        // Initialize standard fades
-        sr.reveal('.anim-fade-up', { origin: 'bottom' });
-        
-        // Specific delays if present
-        sr.reveal('.anim-fade-up.delay-100', { delay: 100 });
-        sr.reveal('.anim-fade-up.delay-200', { delay: 200 });
-        sr.reveal('.anim-fade-up.delay-300', { delay: 300 });
-        sr.reveal('.anim-fade-up.delay-400', { delay: 400 });
+        // Setup dasar untuk animasi pudar ke atas (fade-up)
+        sr.reveal(".anim-fade-up", { origin: "bottom" });
+
+        // Animasi fade-up dengan penundaan (delay) bertingkat
+        sr.reveal(".anim-fade-up.delay-100", { delay: 100 });
+        sr.reveal(".anim-fade-up.delay-200", { delay: 200 });
+        sr.reveal(".anim-fade-up.delay-300", { delay: 300 });
+        sr.reveal(".anim-fade-up.delay-400", { delay: 400 });
 
         // Instant Counter Animations (Zero Delay on Viewport Entry)
-        const counterObserver = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              const el = entry.target;
-              const targetStr = el.getAttribute('data-count');
-              if (!targetStr) return;
-              
-              const isPlus = targetStr.includes('+');
-              const isK = targetStr.includes('K');
-              const target = parseInt(targetStr.replace(/\D/g, ''));
-              
-              if (isNaN(target)) return;
+        const counterObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const el = entry.target;
+                const targetStr = el.getAttribute("data-count");
+                if (!targetStr) return;
 
-              const duration = 1200; // 1.2s snappy counting
-              const startTime = performance.now();
+                const isPlus = targetStr.includes("+");
+                const isK = targetStr.includes("K");
+                const target = parseInt(targetStr.replace(/\D/g, ""));
 
-              function updateCounter(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                
-                // easeOutQuart: starts instantly, finishes smoothly
-                const easeOut = 1 - Math.pow(1 - progress, 4);
-                
-                const current = Math.floor(easeOut * target);
-                
-                let display = current.toString();
-                if (isK) display = display + 'K';
-                if (isPlus) display = display + '+';
-                
-                el.innerText = display;
+                if (isNaN(target)) return;
 
-                if (progress < 1) {
-                  requestAnimationFrame(updateCounter);
+                const duration = 1200; // 1.2s snappy counting
+                const startTime = performance.now();
+
+                function updateCounter(currentTime) {
+                  const elapsed = currentTime - startTime;
+                  const progress = Math.min(elapsed / duration, 1);
+
+                  // easeOutQuart: starts instantly, finishes smoothly
+                  const easeOut = 1 - Math.pow(1 - progress, 4);
+
+                  const current = Math.floor(easeOut * target);
+
+                  let display = current.toString();
+                  if (isK) display = display + "K";
+                  if (isPlus) display = display + "+";
+
+                  el.innerText = display;
+
+                  if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                  }
                 }
+
+                requestAnimationFrame(updateCounter);
+                counterObserver.unobserve(el);
               }
+            });
+          },
+          { threshold: 0.05 }
+        );
 
-              requestAnimationFrame(updateCounter);
-              counterObserver.unobserve(el);
-            }
-          });
-        }, { threshold: 0.05 });
-
-        document.querySelectorAll('.counter-up').forEach(el => {
+        document.querySelectorAll(".counter-up").forEach((el) => {
           counterObserver.observe(el);
         });
 
-        // ── Dynamic Tab Title (Attention Retention) ──
+        // ── Ubah Judul Tab Otomatis Saat Berpindah Tab (Dynamic Tab Title) ──
         let originalTitle = document.title;
         document.addEventListener("visibilitychange", () => {
           if (document.hidden) {
@@ -187,11 +327,22 @@ const { title = "Muhammad Raid Zaidani (zidan-idz) — Fullstack Developer & Gam
           }
         });
 
-        // ── Konami Code Easter Egg ──
-        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        // ── Telur Paskah Konami Code (Konami Code Easter Egg) ──
+        const konamiCode = [
+          "ArrowUp",
+          "ArrowUp",
+          "ArrowDown",
+          "ArrowDown",
+          "ArrowLeft",
+          "ArrowRight",
+          "ArrowLeft",
+          "ArrowRight",
+          "b",
+          "a"
+        ];
         let konamiPosition = 0;
-        
-        document.addEventListener('keydown', (e) => {
+
+        document.addEventListener("keydown", (e) => {
           if (e.key === konamiCode[konamiPosition]) {
             konamiPosition++;
             if (konamiPosition === konamiCode.length) {
@@ -205,29 +356,30 @@ const { title = "Muhammad Raid Zaidani (zidan-idz) — Fullstack Developer & Gam
 
         function activateGlitchMode() {
           // Add a chaotic class to body
-          document.body.classList.toggle('glitch-active');
-          
+          document.body.classList.toggle("glitch-active");
+
           // Optionally flash colors
           let flashes = 0;
           const glitchInterval = setInterval(() => {
-            document.body.style.filter = flashes % 2 === 0 ? 'invert(100%) hue-rotate(180deg) saturate(300%)' : 'none';
-            document.body.style.transform = flashes % 2 === 0 ? 'translate(5px, 5px) skewX(2deg)' : 'none';
+            document.body.style.filter =
+              flashes % 2 === 0 ? "invert(100%) hue-rotate(180deg) saturate(300%)" : "none";
+            document.body.style.transform =
+              flashes % 2 === 0 ? "translate(5px, 5px) skewX(2deg)" : "none";
             flashes++;
             if (flashes > 15) {
               clearInterval(glitchInterval);
-              document.body.style.filter = 'none';
-              document.body.style.transform = 'none';
+              document.body.style.filter = "none";
+              document.body.style.transform = "none";
               // Keep the custom background theme permanently active
-              if (document.body.classList.contains('glitch-active')) {
-                document.body.style.filter = 'contrast(1.2) hue-rotate(90deg)';
+              if (document.body.classList.contains("glitch-active")) {
+                document.body.style.filter = "contrast(1.2) hue-rotate(90deg)";
               } else {
-                document.body.style.filter = '';
+                document.body.style.filter = "";
               }
             }
           }, 80);
-          console.log('[SYSTEM] KONAMI CODE ACTIVATED');
+          console.log("[SYSTEM] KONAMI CODE ACTIVATED");
         }
-
       });
     </script>
   </body>

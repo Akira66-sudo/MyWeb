@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-base: #F5F4F0;
-  --color-surface: #FFFFFF;
-  --color-border-subtle: #E4E4E0;
+  --color-bg-base: #f5f4f0;
+  --color-surface: #ffffff;
+  --color-border-subtle: #e4e4e0;
   --color-border-strong: rgba(28, 28, 26, 0.15);
-  
-  --color-text-primary: #1C1C1A;
-  --color-text-secondary: #6C6C69;
-  --color-text-muted: #A8A8A4;
 
-  --color-python-blue: #1C1C1A;
-  
+  --color-text-primary: #1c1c1a;
+  --color-text-secondary: #6c6c69;
+  --color-text-muted: #a8a8a4;
+
+  --color-python-blue: #1c1c1a;
+
   --font-sans: "Inter", sans-serif;
   --font-serif: "Playfair Display", serif;
   --font-mono: "JetBrains Mono", monospace;
@@ -25,10 +25,36 @@ html {
   color: var(--color-text-primary);
   scroll-behavior: smooth;
   font-family: var(--font-sans);
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* =============================================
+   DARK MODE OVERRIDES
+   ============================================= */
+html.dark {
+  --color-bg-base: #111111;
+  --color-surface: #1a1a1a;
+  --color-border-subtle: #333333;
+  --color-border-strong: rgba(255, 255, 255, 0.15);
+
+  --color-text-primary: #f5f5f0;
+  --color-text-secondary: #a0a0a0;
+  --color-text-muted: #666666;
+  
+  --color-python-blue: #f5f5f0;
+}
+
+html.dark .tech-logo {
+  filter: grayscale(100%) brightness(0) invert(1) !important;
+  opacity: 0.5 !important;
+}
+html.dark .tech-logo:hover {
+  filter: none !important;
+  opacity: 1 !important;
 }
 
 ::selection {
-  background-color: #02B6E6;
+  background-color: #02b6e6;
   color: var(--color-surface);
 }
 
@@ -89,8 +115,12 @@ html {
    ANIMATIONS
    ============================================= */
 @keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 .animate-marquee {
   display: inline-block;
@@ -99,34 +129,61 @@ html {
 }
 
 /* ScrollReveal handles initial hiding gracefully to prevent FOUC and Blank Screens */
-html.sr .anim-fade-up { 
-  visibility: hidden; 
+html.sr .anim-fade-up {
+  visibility: hidden;
 }
 /* Delay classes can still be used as data attributes by JS, or we can just read them in JS. For now, keep them for potential fallback or use */
-.delay-100 { /* handled by JS */ }
-.delay-200 { /* handled by JS */ }
-.delay-300 { /* handled by JS */ }
-.delay-400 { /* handled by JS */ }
+.delay-100 {
+  /* handled by JS */
+}
+.delay-200 {
+  /* handled by JS */
+}
+.delay-300 {
+  /* handled by JS */
+}
+.delay-400 {
+  /* handled by JS */
+}
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
-.animate-blink { 
-  animation: blink 1s step-end infinite; 
+.animate-blink {
+  animation: blink 1s step-end infinite;
 }
 
 /* =============================================
    UTILITIES
    ============================================= */
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 .text-stroke-1 {
-  -webkit-text-stroke: 1px var(--color-surface);
+  -webkit-text-stroke: 1px #f5f4f0;
   color: transparent;
 }
 .text-stroke-hover:hover {
   -webkit-text-stroke: 0px;
-  color: var(--color-surface);
+  color: #f5f4f0;
+}
+
+@keyframes train-pass {
+  0% { transform: translateX(-150%); }
+  100% { transform: translateX(120vw); }
+}
+.animate-train-pass {
+  animation: train-pass 4s linear infinite;
+  will-change: transform;
 }

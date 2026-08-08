@@ -1,0 +1,77 @@
+---
+// 404.astro
+// Halaman error khusus (Custom 404 Page) yang ditampilkan saat pengguna mengakses URL yang tidak ada.
+import MainLayout from "../layouts/MainLayout.astro";
+---
+
+<MainLayout title="404 — Transmission Lost" hideUI={true}>
+  <main
+    class="relative w-full min-h-screen flex items-center justify-center pt-24 pb-12 px-6 overflow-hidden"
+  >
+    <!-- Teks '404' besar dan transparan di latar belakang (Giant subtle 404 text in background) -->
+    <div
+      class="absolute inset-0 flex items-center justify-center select-none pointer-events-none z-[-1]"
+    >
+      <h1
+        class="text-[25vw] md:text-[300px] font-mono font-black text-border-strong opacity-5 leading-none tracking-tighter"
+      >
+        404
+      </h1>
+    </div>
+
+    <!-- Konten di baris depan (Foreground Content) -->
+    <div class="relative z-10 max-w-2xl text-center flex flex-col items-center">
+      <!-- Jendela Bergaya Terminal (Terminal Window Aesthetic) -->
+      <div
+        class="animate-rise w-full max-w-lg mx-auto bg-transparent border border-border-strong p-8 md:p-12 shadow-sm rounded-none"
+      >
+        <div class="mb-6 flex justify-center">
+          <i class="ri-radar-line text-4xl text-text-muted animate-pulse"></i>
+        </div>
+
+        <h2 class="text-3xl md:text-5xl font-serif italic mb-4">Transmission Lost</h2>
+
+        <p
+          class="text-text-muted font-mono text-sm md:text-base mb-8 border-b border-border-strong pb-8"
+        >
+          > ERROR_404: The data package you are looking for has vanished into the void. It might
+          have been moved, deleted, or never existed.
+          <span class="inline-block w-2 h-4 bg-text-primary ml-1 animate-[ping_1.5s_infinite]"
+          ></span>
+        </p>
+
+        <a
+          href="/"
+          class="magnetic-btn group relative flex items-center justify-center mx-auto px-8 py-4 bg-text-primary text-bg-base font-bold tracking-widest uppercase text-[10px] md:text-xs rounded-full overflow-hidden hover:scale-105 transition-transform duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.2)]"
+        >
+          <span class="relative z-10 flex items-center gap-2">
+            <i class="ri-arrow-left-line group-hover:-translate-x-1 transition-transform"></i>
+            RETURN TO BASE
+          </span>
+          <!-- Efek kilau saat disentuh kursor (Shine effect on hover) -->
+          <div
+            class="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-out z-0"
+          >
+          </div>
+        </a>
+      </div>
+    </div>
+  </main>
+</MainLayout>
+
+<style>
+  @keyframes rise {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-rise {
+    opacity: 0;
+    animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+</style>

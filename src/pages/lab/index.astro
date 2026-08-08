@@ -1,0 +1,47 @@
+---
+// src/pages/lab/index.astro
+// Secret Draft Page (not included in sitemap)
+import MainLayout from "../../layouts/MainLayout.astro";
+---
+
+<MainLayout title="Laboratory | zidan-idz" hideUI={true}>
+  <section class="min-h-screen flex flex-col items-center justify-center p-8 text-center relative overflow-hidden">
+    <!-- Developer-themed aesthetics -->
+    <div class="absolute inset-0 bg-noise opacity-5 pointer-events-none"></div>
+    <div class="absolute w-full h-full" style="background-image: radial-gradient(circle at center, rgba(168,168,164,0.03) 1px, transparent 1px); background-size: 24px 24px;"></div>
+    
+    <div class="relative z-10 anim-fade-up">
+      <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-border-strong bg-white/5 backdrop-blur-sm mb-8">
+        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+        <span class="font-mono text-[10px] tracking-widest uppercase text-text-muted">Classified Environment</span>
+      </div>
+      
+      <h1 class="text-5xl md:text-7xl font-serif font-bold tracking-tight mb-6 text-text-primary">
+        The Laboratory.
+      </h1>
+      <p class="font-mono text-sm md:text-base text-text-secondary max-w-xl mx-auto mb-12 leading-relaxed">
+        This is an undocumented draft space. Work in progress experiments, unreleased games, and private client previews live here.
+      </p>
+      
+      <!-- Draft Components Placeholder -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-3xl mx-auto text-left">
+        <div class="p-6 border border-border-strong rounded-xl bg-surface/50 backdrop-blur-sm hover:border-text-primary transition-colors group cursor-not-allowed">
+          <h3 class="font-mono text-xs text-text-muted mb-2 tracking-widest uppercase">Draft #1</h3>
+          <h2 class="text-xl font-bold mb-2">Mario Bros Clone</h2>
+          <p class="text-sm text-text-secondary">Godot Engine HTML5 Export testing.</p>
+        </div>
+        <div class="p-6 border border-border-strong rounded-xl bg-surface/50 backdrop-blur-sm hover:border-text-primary transition-colors group cursor-not-allowed">
+          <h3 class="font-mono text-xs text-text-muted mb-2 tracking-widest uppercase">Draft #2</h3>
+          <h2 class="text-xl font-bold mb-2">Client Dashboard UI</h2>
+          <p class="text-sm text-text-secondary">React & Tailwind internal project preview.</p>
+        </div>
+      </div>
+      
+      <div class="mt-16">
+        <a href="/" class="inline-flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors font-mono text-xs uppercase tracking-widest border-b border-transparent hover:border-text-primary pb-1">
+          <i class="ri-arrow-left-line"></i> Return to Surface
+        </a>
+      </div>
+    </div>
+  </section>
+</MainLayout>

@@ -1,0 +1,132 @@
+---
+// Preloader.astro
+// Komponen layar pemuatan (loading screen) "Frosted Glass"
+// Efek kaca buram transparan yang perlahan memudar (fade-out) 
+// untuk menyatu dengan halaman web utama secara seamless.
+---
+
+<!-- Kontainer Utama: Kaca Buram (Backdrop Blur) -->
+<div
+  id="global-preloader"
+  class="fixed inset-0 z-[10000] flex flex-col items-center justify-center transition-all duration-[1.5s] ease-[cubic-bezier(0.76,0,0.24,1)] bg-bg-base/60 backdrop-blur-2xl"
+>
+  <!-- Tekstur noise super halus -->
+  <div class="absolute inset-0 z-0 bg-noise opacity-[0.03] pointer-events-none"></div>
+
+  <div class="relative z-10 flex flex-col items-center gap-8">
+    
+    <!-- Animasi Putaran Geometris Minimalis -->
+    <div class="relative flex items-center justify-center w-16 h-16 opacity-0 transition-opacity duration-1000" id="preloader-spinner">
+      <!-- Cincin statis tipis -->
+      <div class="absolute inset-0 rounded-full border border-border-strong opacity-20"></div>
+      <!-- Cincin berputar -->
+      <div class="absolute inset-0 rounded-full border border-t-text-primary border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
+    </div>
+
+    <!-- Teks Persentase & Status -->
+    <div class="flex flex-col items-center gap-2 opacity-0 translate-y-4 transition-all duration-1000 ease-out" id="preloader-text-container">
+      <div
+        id="preloader-text"
+        class="text-4xl md:text-5xl font-mono font-light text-text-primary tracking-[0.1em]"
+      >
+        00%
+      </div>
+      <div 
+        id="preloader-status"
+        class="mono text-[10px] uppercase tracking-[0.3em] font-bold text-text-secondary"
+      >
+        INITIALIZING
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Variabel status
+  let isWindowLoaded = false;
+  let progress = 0;
+  let loaderInterval;
+
+  // Menangkap event komplit dari browser (Gambar & Font selesai diunduh)
+  window.addEventListener("load", () => {
+    isWindowLoaded = true;
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const preloader = document.getElementById("global-preloader");
+    const preloaderSpinner = document.getElementById("preloader-spinner");
+    const preloaderTextContainer = document.getElementById("preloader-text-container");
+    const preloaderText = document.getElementById("preloader-text");
+    const preloaderStatus = document.getElementById("preloader-status");
+
+    if (!preloader || !preloaderText) return;
+
+    // --- GOD MODE: BYPASS PRELOADER ---
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("skip_preloader") === "true") {
+      preloader.style.display = "none";
+      document.body.style.overflow = "";
+      console.log("⚡ [GOD MODE] Preloader Bypassed.");
+      return; // Stop execution
+    }
+
+    // Lock scroll
+    document.body.style.overflow = "hidden";
+
+    // Fade-in perlahan UI di tengah kaca
+    setTimeout(() => {
+      if (preloaderSpinner) preloaderSpinner.classList.remove("opacity-0");
+      if (preloaderTextContainer) preloaderTextContainer.classList.remove("opacity-0", "translate-y-4");
+    }, 150);
+
+    const updateUI = (val) => {
+      const p = Math.floor(val);
+      preloaderText.innerText = `${p.toString().padStart(2, "0")}%`;
+      
+      // Ganti teks status sesuai persentase untuk kesan "Niat & Premium"
+      if (preloaderStatus) {
+        if (p < 30) preloaderStatus.innerText = "INITIALIZING";
+        else if (p < 70) preloaderStatus.innerText = "RESOLVING ASSETS";
+        else if (p < 99) preloaderStatus.innerText = "PAINTING PIXELS";
+        else preloaderStatus.innerText = "SYSTEM READY";
+      }
+    };
+
+    // Logika True Locking
+    loaderInterval = setInterval(() => {
+      if (isWindowLoaded || document.readyState === "complete") {
+        progress += (100 - progress) * 0.15; // Melesat ke 100%
+      } else {
+        progress += (90 - progress) * 0.05; // Tertahan perlahan di 90%
+      }
+
+      if (progress >= 99.9) {
+        progress = 100;
+        updateUI(progress);
+        clearInterval(loaderInterval);
+
+        // Animasi "Dissolve" (Kaca mencair jadi transparan)
+        setTimeout(() => {
+          // Hilangkan elemen tengah dulu
+          if (preloaderSpinner) preloaderSpinner.style.opacity = "0";
+          if (preloaderTextContainer) preloaderTextContainer.style.opacity = "0";
+
+          setTimeout(() => {
+            // Perlahan hilangkan efek kaca buram dan background warna
+            preloader.style.opacity = "0";
+            preloader.style.backdropFilter = "blur(0px)";
+            document.body.style.overflow = ""; // Buka scroll
+
+            // Hapus elemen sepenuhnya dari DOM
+            setTimeout(() => {
+              preloader.remove();
+            }, 1500); // Waktu yang cukup untuk transisi CSS
+          }, 300);
+        }, 500); // Tahan angka 100% sejenak
+      } else {
+        updateUI(progress);
+      }
+    }, 30);
+  });
+</script>

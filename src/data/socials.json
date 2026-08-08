@@ -2,36 +2,36 @@
   {
     "id": "1",
     "platform_name": "GitHub",
-    "url": "https://github.com",
+    "url": "https://github.com/zidan-idz",
     "icon_class": "ri-github-fill",
     "order_index": 1
   },
   {
     "id": "2",
     "platform_name": "Facebook",
-    "url": "#",
+    "url": "https://facebook.com/zidan-idz",
     "icon_class": "ri-facebook-fill",
     "order_index": 2
   },
   {
     "id": "3",
     "platform_name": "Telegram",
-    "url": "https://t.me/example",
+    "url": "https://t.me/zidan_idz",
     "icon_class": "ri-telegram-line",
     "order_index": 3
   },
   {
     "id": "4",
     "platform_name": "Instagram",
-    "url": "#",
+    "url": "https://instagram.com/zidan_idz",
     "icon_class": "ri-instagram-line",
     "order_index": 4
   },
   {
     "id": "5",
-    "platform_name": "Resume",
-    "url": "#",
-    "icon_class": "ri-file-text-line",
+    "platform_name": "LinkedIn",
+    "url": "https://linkedin.com/in/zidan-idz",
+    "icon_class": "ri-linkedin-fill",
     "order_index": 5
   }
 ]

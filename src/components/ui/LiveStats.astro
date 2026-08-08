@@ -1,0 +1,88 @@
+---
+// LiveStats.astro
+// Komponen kecil yang menampilkan jumlah total penayangan (views) dan suka (likes)
+// Berkomunikasi dengan Supabase (atau fallback lokal) melalui rute /api/stats
+---
+
+<!-- Statistik Global -->
+<div class="mt-6 pt-4 border-t border-dashed border-slate-200 dark:border-slate-800/50">
+  <div class="flex items-center gap-4">
+    <!-- Tampilan Views (Hanya bisa dibaca) -->
+    <div class="flex items-center gap-2 text-xs font-mono text-slate-500" title="Total Views">
+      <i class="ri-eye-line text-[16px]"></i>
+      <!-- Angka views akan berkedip (animate-pulse) sebelum data berhasil dimuat -->
+      <span id="view-count" class="animate-pulse">...</span>
+    </div>
+
+    <!-- Tombol Likes (Bisa diklik) -->
+    <button
+      id="like-btn"
+      class="flex items-center gap-2 text-xs font-mono text-slate-500 hover:text-pink-500 transition-colors group focus:outline-none"
+      title="Give a Like"
+    >
+      <i class="ri-thumb-up-line text-[16px] group-hover:scale-110 transition-transform"></i>
+      <span id="like-count">...</span>
+    </button>
+  </div>
+</div>
+
+<script is:inline>
+  const viewCountEl = document.getElementById("view-count");
+  const likeCountEl = document.getElementById("like-count");
+  const likeBtn = document.getElementById("like-btn");
+
+  // Fungsi pembantu untuk memformat angka ribuan (misal: 1000 -> 1,000)
+  const formatNum = (num) => new Intl.NumberFormat("en-US").format(num);
+
+  // Inisialisasi data statistik
+  async function initStats() {
+    try {
+      // 1. Secara otomatis mendaftarkan view setiap kali halaman dimuat
+      const viewRes = await fetch("/api/stats", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "view" })
+      });
+      const stats = await viewRes.json();
+      updateUI(stats);
+    } catch (e) {
+      console.error("Stats error:", e);
+    }
+  }
+
+  // Fungsi untuk memperbarui tampilan UI dengan data baru dari server
+  function updateUI(stats) {
+    if (stats.views !== undefined) {
+      viewCountEl.innerText = formatNum(stats.views);
+      viewCountEl.classList.remove("animate-pulse"); // Hentikan efek berkedip
+    }
+    if (stats.likes !== undefined) likeCountEl.innerText = formatNum(stats.likes);
+  }
+
+  // Logika Interaksi Tombol Suka (Like)
+  if (likeBtn) {
+    likeBtn.addEventListener("click", async () => {
+      // Optimistic UI Update: Ubah angka langsung sebelum server membalas (agar terasa cepat)
+      const currentLikes = parseInt(likeCountEl.innerText.replace(/,/g, "")) || 0;
+      likeCountEl.innerText = formatNum(currentLikes + 1);
+      likeBtn.classList.add("text-pink-500"); // Beri warna pink sebagai respon visual instan
+
+      try {
+        const res = await fetch("/api/stats", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ type: "like" }) // Kirim tipe 'like' ke API
+        });
+        const stats = await res.json();
+        updateUI(stats); // Sinkronisasikan angka akhir dengan database
+      } catch (e) {
+        console.error("Like error:", e);
+      }
+    });
+  }
+
+  // Eksekusi fungsi saat script dijalankan
+  initStats();
+</script>
