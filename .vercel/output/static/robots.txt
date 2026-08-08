@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://zidan-idz.my.id/sitemap-index.xml
