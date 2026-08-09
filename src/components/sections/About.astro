@@ -3,8 +3,6 @@
 // Bagian ini menampilkan profil diri (gambar & nama), bio panjang,
 // serta rincian fase perjalanan kerja (work phases).
 import { getSiteData, getWorkPhases } from "../../lib/dataFetcher";
-import { Image } from "astro:assets";
-import profileImg from "../../assets/images/profile.jpg";
 
 // Ambil data identitas dan fase kerja dari backend palsu/asli (JSON/DB)
 const { identity } = await getSiteData();
@@ -29,8 +27,8 @@ const workPhases = await getWorkPhases();
           class="relative aspect-[4/5] w-full max-w-sm mx-auto border border-border-strong p-3 bg-black/[0.02] group shadow-xl"
         >
           <div class="relative w-full h-full overflow-hidden bg-[#E4E4E0]">
-            <Image
-              src={profileImg}
+            <img
+              src="/images/profile.jpg"
               alt="Profile"
               class="w-full h-full object-cover grayscale group-hover:grayscale-0 contrast-[1.05] group-hover:scale-105 transition-all duration-700 ease-out"
             />
