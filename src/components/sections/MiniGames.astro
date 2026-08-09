@@ -429,6 +429,22 @@
     modal.classList.add("opacity-0", "pointer-events-none");
   }
 
+  function arcadeModalError(msg) {
+    modalError.innerText = msg;
+    modalError.classList.replace("opacity-0", "opacity-100");
+    modalBox.classList.add("shake-error");
+    setTimeout(() => modalBox.classList.remove("shake-error"), 400);
+
+    // Kembalikan tombol ke keadaan semula agar bisa dicoba lagi
+    modalSubmit.innerText = "Submit";
+    modalSubmit.disabled = false;
+    modalCancel.disabled = false;
+    modalInput.disabled = false;
+    modalSubmit.classList.remove("opacity-50", "cursor-not-allowed");
+    modalCancel.classList.remove("opacity-50", "cursor-not-allowed");
+    modalInput.focus();
+  }
+
   function handleModalSubmit() {
     let val = modalInput.value.trim();
     if (val.length < 2 || val.length > 10) {
@@ -891,8 +907,9 @@
                 const result = await res.json();
                 if (!res.ok) {
                   console.error("Score rejected by Iron Dome:", result.error);
+                  arcadeModalError(result.error || "Name rejected by filter");
+                  return; // Jangan tutup modal jika gagal
                 }
-                // Tetap sembunyikan modal dan perbarui status terlepas dari berhasil atau diblokir
                 loadGlobalStats();
                 hideArcadeModal();
               })
@@ -1079,6 +1096,8 @@
                     const result = await res.json();
                     if (!res.ok) {
                       console.error("Score rejected by Iron Dome:", result.error);
+                      arcadeModalError(result.error || "Name rejected by filter");
+                      return; // Jangan tutup modal jika gagal
                     }
                     loadGlobalStats();
                     hideArcadeModal();
