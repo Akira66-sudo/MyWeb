@@ -20,7 +20,7 @@ export async function POST({ request }) {
       return new Response(
         JSON.stringify({
           success: false,
-          message: "Data tidak lengkap"
+          message: "Incomplete data"
         }),
         { status: 400 } // Kode 400: Bad Request
       );
@@ -34,7 +34,7 @@ export async function POST({ request }) {
       return new Response(
         JSON.stringify({
           success: false,
-          message: "TRANSMISI DIBLOKIR: Terdeteksi konten tidak pantas."
+          message: "TRANSMISSION BLOCKED: Inappropriate content detected."
         }),
         { status: 403 } // Kode 403: Akses Dilarang
       );
@@ -64,7 +64,7 @@ export async function POST({ request }) {
     return new Response(
       JSON.stringify({
         success: false,
-        message: "Server mengalami gangguan saat memproses transmisi."
+        message: "Server encountered an error while processing the transmission."
       }),
       { status: 500 } // Kode 500: Internal Server Error
     );

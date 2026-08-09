@@ -13,7 +13,7 @@ export const prerender = false;
  * Endpoint POST untuk menyimpan skor baru.
  */
 export async function POST({ request }) {
-  // Jika database offline/tidak dikonfigurasi, tolak permintaan
+  // If the database is offline/not configured, reject the request
   if (!supabase) {
     return new Response(JSON.stringify({ success: false, error: "Database offline" }), {
       status: 503, // Service Unavailable
@@ -27,7 +27,7 @@ export async function POST({ request }) {
 
     // 1. Validasi Kolom: Nama, ID Game, dan Skor harus ada
     if (!player_name || !game_id || score === undefined) {
-      return new Response(JSON.stringify({ success: false, error: "Data tidak lengkap" }), {
+      return new Response(JSON.stringify({ success: false, error: "Incomplete data" }), {
         status: 400,
         headers: { "Content-Type": "application/json" }
       });
@@ -36,7 +36,7 @@ export async function POST({ request }) {
     // 2. Iron Dome: Saring nama pemain dari kata-kata tidak senonoh
     if (isToxic(player_name)) {
       return new Response(
-        JSON.stringify({ success: false, error: "Terdeteksi nama yang tidak pantas." }),
+        JSON.stringify({ success: false, error: "Inappropriate name detected." }),
         { status: 403, headers: { "Content-Type": "application/json" } }
       );
     }
@@ -53,7 +53,7 @@ export async function POST({ request }) {
     if (dbError) throw new Error(dbError.message);
 
     // 4. Sukses menyimpan skor
-    return new Response(JSON.stringify({ success: true, message: "Skor berhasil disimpan" }), {
+    return new Response(JSON.stringify({ success: true, message: "Score successfully saved" }), {
       status: 200,
       headers: { "Content-Type": "application/json" }
     });
