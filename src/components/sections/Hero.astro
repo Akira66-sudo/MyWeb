@@ -3,8 +3,6 @@
 // Komponen utama (Hero Section) yang pertama kali dilihat pengunjung.
 // Menampilkan Nama, Peran (Role), Bio, dan tombol Call to Action (CTA).
 import { getSiteData } from "../../lib/dataFetcher";
-import { Image } from "astro:assets";
-import heroBg from "../../assets/images/hero-bg.jpg";
 
 // Ambil data identitas dari JSON/DB
 const { identity } = await getSiteData();
@@ -15,8 +13,8 @@ const { identity } = await getSiteData();
 >
   <!-- Latar Belakang (Gambar dengan efek abu-abu & pudar) -->
   <div class="absolute inset-0 z-0">
-    <Image
-      src={heroBg}
+    <img
+      src="/images/hero-bg.webp"
       alt="Zen Workspace"
       class="w-full h-full object-cover opacity-[0.15]"
       style="filter: grayscale(100%) contrast(1.2);"
