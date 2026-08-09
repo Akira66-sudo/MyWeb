@@ -99,7 +99,15 @@ const safeSubstrings = [
   "assalamualaikum",
   "assassin",
   "classic",
-  "assistant"
+  "assistant",
+  "suka",
+  "kasih",
+  "asuh",
+  "asul",
+  "pasukan",
+  "bersuka",
+  "susah",
+  "usaha"
 ];
 
 /**
@@ -138,7 +146,11 @@ function buildRegex(word) {
     }
     pattern += token;
   }
-  // Gunakan substring match (TANPA \b) agar tidak bisa dibypass dengan penggabungan kata
+  // Kata pendek (<=3 huruf) pakai word boundary agar tidak false positive di kata biasa
+  // Kata panjang (>=4 huruf) pakai substring match agar tidak bisa dibypass
+  if (word.length <= 3) {
+    return new RegExp(`(?<![a-zA-Z])${pattern}(?![a-zA-Z])`, "i");
+  }
   return new RegExp(pattern, "i");
 }
 

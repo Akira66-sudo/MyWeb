@@ -1,6 +1,6 @@
 import { renderers } from './renderers.mjs';
 import { s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_CvSoi7hX.mjs';
-import { manifest } from './manifest_TmEqHr0L.mjs';
+import { manifest } from './manifest_DRRMi82j.mjs';
 import { createExports } from '@astrojs/netlify/ssr-function.js';
 
 const serverIslandMap = new Map();;
@@ -10,22 +10,18 @@ const _page1 = () => import('./pages/404.astro.mjs');
 const _page2 = () => import('./pages/api/contact.astro.mjs');
 const _page3 = () => import('./pages/api/keepalive.astro.mjs');
 const _page4 = () => import('./pages/api/score.astro.mjs');
-const _page5 = () => import('./pages/api/seed.astro.mjs');
-const _page6 = () => import('./pages/api/stats.astro.mjs');
-const _page7 = () => import('./pages/api/wakeup.astro.mjs');
-const _page8 = () => import('./pages/lab.astro.mjs');
-const _page9 = () => import('./pages/index.astro.mjs');
+const _page5 = () => import('./pages/api/stats.astro.mjs');
+const _page6 = () => import('./pages/lab.astro.mjs');
+const _page7 = () => import('./pages/index.astro.mjs');
 const pageMap = new Map([
     ["node_modules/astro/dist/assets/endpoint/generic.js", _page0],
     ["src/pages/404.astro", _page1],
     ["src/pages/api/contact.js", _page2],
     ["src/pages/api/keepalive.js", _page3],
     ["src/pages/api/score.js", _page4],
-    ["src/pages/api/seed.js", _page5],
-    ["src/pages/api/stats.js", _page6],
-    ["src/pages/api/wakeup.js", _page7],
-    ["src/pages/lab/index.astro", _page8],
-    ["src/pages/index.astro", _page9]
+    ["src/pages/api/stats.js", _page5],
+    ["src/pages/lab/index.astro", _page6],
+    ["src/pages/index.astro", _page7]
 ]);
 
 const _manifest = Object.assign(manifest, {
@@ -36,7 +32,7 @@ const _manifest = Object.assign(manifest, {
     middleware: () => import('./_noop-middleware.mjs')
 });
 const _args = {
-    "middlewareSecret": "08b979f5-98ee-4bfd-a677-85a8d907567d"
+    "middlewareSecret": "df5a73ca-c820-4b40-8f06-bf0409bc9b56"
 };
 const _exports = createExports(_manifest, _args);
 const __astrojsSsrVirtualEntry = _exports.default;
